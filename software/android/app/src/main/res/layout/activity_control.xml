@@ -17,21 +17,20 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/left_control_image"
-                android:layout_width="match_parent"
+            <com.rookiedev.smarty.VerticalSeekBar
+                android:id="@+id/seekBar_l"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
-                android:scaleType="fitStart"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:max="511"
+                android:min="0"
+                android:progress="10"
+                android:thumb="@drawable/seekbar_drawable_thumb"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_control_left" />
-
-
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,19 +38,20 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/right_control_image"
-                android:layout_width="match_parent"
+            <com.rookiedev.smarty.VerticalSeekBar
+                android:id="@+id/seekBar_r"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:max="510"
+                android:min="0"
+                android:progress="10"
+                android:thumb="@drawable/seekbar_drawable_thumb"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_control_circle_standby" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

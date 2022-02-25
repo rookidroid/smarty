@@ -1,22 +1,18 @@
 package com.rookiedev.smarty
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.SeekBar
+import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.rookiedev.hexapod.network.BluetoothClient
-import com.rookiedev.hexapod.network.TCPClient
+import com.rookiedev.smarty.network.TCPClient
 import kotlinx.coroutines.*
-import kotlin.math.PI
-import kotlin.math.atan2
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 
 /**
@@ -66,7 +62,7 @@ enum class TypeOption(
     )
 }
 
-class ControlActivity : AppCompatActivity() {
+class ControlActivity : Activity() {
     companion object {
         private const val CMD_STANDBY = "standby:"
         private const val CMD_LAYDOWN = "laydown:"
@@ -113,16 +109,14 @@ class ControlActivity : AppCompatActivity() {
     private var ip: String = ""
     private var port = 0
 
-    private var btClient: BluetoothClient? = null
-    private var mac: String = ""
-
     private val scope = CoroutineScope(Job() + Dispatchers.IO)
 
     private var currentState: String = CMD_STANDBY
     private lateinit var progressBar: ConstraintLayout
 
-    private var rightControlImage: ImageView? = null
-    private var leftControlImage: ImageView? = null
+    private var seekBarLeft: VerticalSeekBar? = null
+    private var seekBarRight: VerticalSeekBar? = null
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,209 +127,55 @@ class ControlActivity : AppCompatActivity() {
 
         mContext = applicationContext
 
-        connectInterface = myIntent.getStringExtra("interface").toString()
-        if (connectInterface == "WiFi") {
-            ip = myIntent.getStringExtra("ip").toString()
-            port = myIntent.getStringExtra("port").toString().toInt()
-        } else if (connectInterface == "Bluetooth") {
-            mac = myIntent.getStringExtra("mac").toString()
-        }
+        ip = myIntent.getStringExtra("ip").toString()
+        port = myIntent.getStringExtra("port").toString().toInt()
+
+        seekBarLeft = findViewById(R.id.seekBar_l)
+        seekBarRight = findViewById(R.id.seekBar_r)
+
 
         controlWindowInsets(true)
 
-        rightControlImage = findViewById(R.id.right_control_image)
-        leftControlImage = findViewById(R.id.left_control_image)
         progressBar = findViewById(R.id.progressBar)
 
-        val rightVto: ViewTreeObserver = rightControlImage!!.viewTreeObserver
-        rightVto.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-            override fun onPreDraw(): Boolean {
-                rightControlImage!!.viewTreeObserver.removeOnPreDrawListener(this)
-                rightHeight = rightControlImage!!.measuredHeight
-                rightWidth = rightControlImage!!.measuredWidth
-                rightRadius = rightWidth.coerceAtMost(rightHeight) / 2f
-                return true
+        seekBarLeft!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                // Display the current progress of SeekBar
+//                println(i)
+                val msg = "L"
+                val speed = i - 255
+                sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                seekBar.progress = 255
+                sendMessageAsync("L0:")
             }
         })
 
-        val leftVto: ViewTreeObserver = leftControlImage!!.viewTreeObserver
-        leftVto.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-            override fun onPreDraw(): Boolean {
-                leftControlImage!!.viewTreeObserver.removeOnPreDrawListener(this)
-                leftHeight = leftControlImage!!.measuredHeight
-                leftWidth = 2*leftHeight/3
-                return true
+        seekBarRight!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                // Display the current progress of SeekBar
+//                println(i)
+                val msg = "R"
+                val speed = i - 255
+                sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                seekBar.progress = 255
+                sendMessageAsync("R0:")
             }
         })
 
-        rightControlImage!!.setOnTouchListener(
-            object : View.OnTouchListener {
-                override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-                    val touchX = motionEvent.x
-                    val touchY = motionEvent.y
-                    if (touchX < 0) {
-                        return false
-                    }
-                    if (touchY < 0) {
-                        return false
-                    }
-
-                    val coorX = touchX - rightWidth / 2
-                    val coorY = touchY - rightHeight / 2
-
-                    val length = sqrt(coorX.pow(2) + coorY.pow(2))
-                    if (length < rightRadius / 4) {
-                        if (currentState != CMD_STANDBY) {
-                            sendMessageAsync(CMD_STANDBY)
-                            currentState = CMD_STANDBY
-                            rightControlImage!!.setImageResource(R.drawable.ic_control_circle_standby)
-
-                            leftControlImage!!.setImageResource(R.drawable.ic_control_left)
-                        }
-                    } else if (length >= rightRadius / 4 && length < 2 * rightRadius / 3) {
-                        val angle = atan2(coorY, coorX)
-                        if (angle > -7 * PI / 8 && angle < -5 * PI / 8) {
-                            if (currentState != CMD_WALK_L45) {
-                                sendMessageAsync(CMD_WALK_L45)
-                                currentState = CMD_WALK_L45
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_l45)
-                            }
-                        } else if (angle > -5 * PI / 8 && angle < -3 * PI / 8) {
-                            if (currentState != CMD_WALK_0) {
-                                sendMessageAsync(CMD_WALK_0)
-                                currentState = CMD_WALK_0
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_0)
-                            }
-                        } else if (angle > -3 * PI / 8 && angle <= -PI / 8) {
-                            if (currentState != CMD_WALK_R45) {
-                                sendMessageAsync(CMD_WALK_R45)
-                                currentState = CMD_WALK_R45
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_r45)
-                            }
-                        } else if (angle > -PI / 8 && angle <= PI / 8) {
-                            if (currentState != CMD_WALK_R90) {
-                                sendMessageAsync(CMD_WALK_R90)
-                                currentState = CMD_WALK_R90
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_r90)
-                            }
-                        } else if (angle > PI / 8 && angle <= 3 * PI / 8) {
-                            if (currentState != CMD_WALK_R135) {
-                                sendMessageAsync(CMD_WALK_R135)
-                                currentState = CMD_WALK_R135
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_r135)
-                            }
-                        } else if (angle > 3 * PI / 8 && angle <= 5 * PI / 8) {
-                            if (currentState != CMD_WALK_180) {
-                                sendMessageAsync(CMD_WALK_180)
-                                currentState = CMD_WALK_180
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_180)
-                            }
-                        } else if (angle > 5 * PI / 8 && angle <= 7 * PI / 8) {
-                            if (currentState != CMD_WALK_L135) {
-                                sendMessageAsync(CMD_WALK_L135)
-                                currentState = CMD_WALK_L135
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_l135)
-                            }
-                        } else {
-                            if (currentState != CMD_WALK_L90) {
-                                sendMessageAsync(CMD_WALK_L90)
-                                currentState = CMD_WALK_L90
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_walk_l90)
-                            }
-                        }
-                        leftControlImage!!.setImageResource(R.drawable.ic_control_left)
-                    } else if (length >= 2 * rightRadius / 3 && length < rightRadius) {
-                        val angle = atan2(coorY, coorX)
-                        if (angle > -PI / 4 && angle <= PI / 4) {
-                            if (currentState != CMD_TURNRIGHT) {
-                                sendMessageAsync(CMD_TURNRIGHT)
-                                currentState = CMD_TURNRIGHT
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_turnright)
-                            }
-                        } else if (angle > PI / 4 && angle <= 3 * PI / 4) {
-                            if (currentState != CMD_FASTBACKWARD) {
-                                sendMessageAsync(CMD_FASTBACKWARD)
-                                currentState = CMD_FASTBACKWARD
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_fastbackward)
-                            }
-                        } else if (angle > -3 * PI / 4 && angle < -PI / 4) {
-                            if (currentState != CMD_FASTFORWARD) {
-                                sendMessageAsync(CMD_FASTFORWARD)
-                                currentState = CMD_FASTFORWARD
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_fastforward)
-                            }
-                        } else {
-                            if (currentState != CMD_TURNLEFT) {
-                                sendMessageAsync(CMD_TURNLEFT)
-                                currentState = CMD_TURNLEFT
-                                rightControlImage!!.setImageResource(R.drawable.ic_control_circle_turnleft)
-                            }
-                        }
-                        leftControlImage!!.setImageResource(R.drawable.ic_control_left)
-                    }
-                    return true
-                }
-            }
-        )
-
-        leftControlImage!!.setOnTouchListener(
-            object : View.OnTouchListener {
-                override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-                    val touchX = motionEvent.x
-                    val touchY = motionEvent.y
-                    if (touchX < 0 || touchX > leftWidth) {
-                        return false
-                    }
-                    if (touchY < 0 || touchY > leftHeight) {
-                        return false
-                    }
-
-                    if (touchX < leftWidth/2){
-                        if(touchY< leftHeight/3){
-                            if (currentState != CMD_ROTATEY) {
-                                sendMessageAsync(CMD_ROTATEY)
-                                currentState = CMD_ROTATEY
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_rotatey)
-                            }
-                        } else if( touchY >= leftHeight/3 && touchY < 2*leftHeight/3) {
-                            if (currentState != CMD_ROTATEX) {
-                                sendMessageAsync(CMD_ROTATEX)
-                                currentState = CMD_ROTATEX
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_rotatex)
-                            }
-                        } else {
-                            if (currentState != CMD_ROTATEZ) {
-                                sendMessageAsync(CMD_ROTATEZ)
-                                currentState = CMD_ROTATEZ
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_rotatez)
-                            }
-                        }
-                    } else {
-                        if(touchY< leftHeight/3){
-                            if (currentState != CMD_CLIMBFORWARD) {
-                                sendMessageAsync(CMD_CLIMBFORWARD)
-                                currentState = CMD_CLIMBFORWARD
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_climb_forward)
-                            }
-                        } else if( touchY >= leftHeight/3 && touchY < 2*leftHeight/3) {
-                            if (currentState != CMD_TWIST) {
-                                sendMessageAsync(CMD_TWIST)
-                                currentState = CMD_TWIST
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_twist)
-                            }
-                        } else {
-                            if (currentState != CMD_CLIMBBACKWARD) {
-                                sendMessageAsync(CMD_CLIMBBACKWARD)
-                                currentState = CMD_CLIMBBACKWARD
-                                leftControlImage!!.setImageResource(R.drawable.ic_control_left_climb_backward)
-                            }
-                        }
-                    }
-                    rightControlImage!!.setImageResource(R.drawable.ic_control_circle)
-                    return true
-                }
-            }
-        )
     }
 
     @SuppressLint("MissingPermission")
@@ -343,78 +183,42 @@ class ControlActivity : AppCompatActivity() {
         super.onResume()
         progressBar.visibility = View.VISIBLE
 
-        if (connectInterface == "WiFi") {
-            this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
-                override fun messageReceived(message: String?) {
-                    if (message == null) {
+        this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
+            override fun messageReceived(message: String?) {
+                if (message == null) {
 //                    alertDialog(DISCONNECTED)
-                        println("no message")
-                    }
-                }
-            }, object : TCPClient.OnConnectEstablished {
-                override fun onConnected() {
-//                udpClient.start()
-                    println("connected")
-                    Handler(Looper.getMainLooper()).post {
-                        progressBar.visibility = View.GONE
-                    }
-                }
-            }, object : TCPClient.OnDisconnected {
-                override fun onDisconnected() {
-                    Handler(Looper.getMainLooper()).post {
-                        progressBar.visibility = View.GONE
-                        alertDialog(0)
-                    }
+                    println("no message")
                 }
             }
-            )
-            this.tcpClient!!.start()
-        } else if (connectInterface == "Bluetooth") {
-            println("Bluetooth")
-            this.btClient =
-                BluetoothClient(mContext, mac, object : BluetoothClient.OnMessageReceived {
-                    override fun messageReceived(message: String?) {
-                        if (message == null) {
-//                    alertDialog(DISCONNECTED)
-                            println("no message")
-                        }
-                    }
-                }, object : BluetoothClient.OnConnectEstablished {
-                    override fun onConnected() {
+        }, object : TCPClient.OnConnectEstablished {
+            override fun onConnected() {
 //                udpClient.start()
-                        println("connected")
-                        Handler(Looper.getMainLooper()).post {
-                            progressBar.visibility = View.GONE
-                        }
-                    }
-                }, object : BluetoothClient.OnDisconnected {
-                    override fun onDisconnected() {
-                        Handler(Looper.getMainLooper()).post {
-                            progressBar.visibility = View.GONE
-                            alertDialog(0)
-                        }
-                    }
+                println("connected")
+                Handler(Looper.getMainLooper()).post {
+                    progressBar.visibility = View.GONE
                 }
-                )
-            this.btClient!!.start()
-
+            }
+        }, object : TCPClient.OnDisconnected {
+            override fun onDisconnected() {
+                Handler(Looper.getMainLooper()).post {
+                    progressBar.visibility = View.GONE
+                    alertDialog(0)
+                }
+            }
         }
+        )
+        this.tcpClient!!.start()
+
 
         currentState = CMD_STANDBY
-        rightControlImage!!.setImageResource(R.drawable.ic_control_circle_standby)
-        leftControlImage!!.setImageResource(R.drawable.ic_control_left)
+        seekBarLeft!!.progress = 255
+        seekBarRight!!.progress = 255
     }
 
     override fun onPause() {
         super.onPause()
-        if (connectInterface == "WiFi") {
-            tcpClient!!.stopClient()
-            tcpClient!!.interrupt()
-        } else if (connectInterface == "Bluetooth") {
-            btClient!!.stopClient()
-            btClient!!.interrupt()
-        }
-
+        tcpClient!!.stopClient()
+        tcpClient!!.interrupt()
     }
 
 
@@ -439,11 +243,7 @@ class ControlActivity : AppCompatActivity() {
             // New coroutine that can call suspend functions
 
             withContext(Dispatchers.IO) {              // Dispatchers.IO (main-safety block)
-                if (connectInterface == "WiFi") {
-                    tcpClient?.sendMessage(message)
-                } else if (connectInterface == "Bluetooth") {
-                    btClient?.sendMessage(message)
-                }
+                tcpClient?.sendMessage(message)
             }
         }
     }
@@ -458,7 +258,8 @@ class ControlActivity : AppCompatActivity() {
                     "Unable to connect to the Hexapod."
                 )
                 alert.setOnCancelListener { finish() }
-                alert.setButton(AlertDialog.BUTTON_POSITIVE,
+                alert.setButton(
+                    AlertDialog.BUTTON_POSITIVE,
                     "OK"
                 ) { _, _ -> finish() }
             }

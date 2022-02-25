@@ -2,8 +2,6 @@ package com.rookiedev.smarty
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,12 +10,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
@@ -63,19 +59,12 @@ class MainActivity : AppCompatActivity() {
 
         mContext = applicationContext
 
-        // tab layout
-        tabLayout = findViewById(R.id.tab)
 
         // TCP
         val ipLayout = findViewById<TextInputLayout>(R.id.ip_input_layout)
         val portLayout = findViewById<TextInputLayout>(R.id.port_input_layout)
         ipInput = findViewById(R.id.ip_input)
         portInput = findViewById(R.id.port_input)
-
-        // bluetooth
-        val selectedDevice = findViewById<ConstraintLayout>(R.id.selected)
-        btDeviceName = findViewById(R.id.textView_device_name)
-        btDeviceMac = findViewById(R.id.textView_device_mac)
 
         // connect button
         val connectButton = findViewById<Button>(R.id.button_connect)
@@ -87,111 +76,21 @@ class MainActivity : AppCompatActivity() {
         // read shared preference
         readSharedPref()
 
-        // tab select listener
-        tabLayout.addOnTabSelectedListener(
-            object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tab!!.text == TAB_WIFI) {
-                        ipLayout.visibility = View.VISIBLE
-                        portLayout.visibility = View.VISIBLE
-                        selectedDevice.visibility = View.GONE
-                    } else if (tab.text == TAB_BLUETOOTH) {
-                        // request bluetooth permissions
-                        checkPermission(
-                            "android.permission.BLUETOOTH_CONNECT",
-                            BLUETOOTH_PERMISSION_CODE
-                        )
-                        checkPermission("android.permission.BLUETOOTH_SCAN", BLUETOOTH_SCAN_CODE)
-                        ipLayout.visibility = View.GONE
-                        portLayout.visibility = View.GONE
-                        selectedDevice.visibility = View.VISIBLE
-                    }
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
-            }
-        )
-
-        // select bluetooth device
-        selectedDevice.setOnClickListener {
-            val bluetoothManager =
-                this.mContext!!.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-            val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
-            if (bluetoothAdapter != null) {
-                if (!bluetoothAdapter.isEnabled) {
-                    alertDialog(ERROR_BLUETOOTH_DISABLED)
-                } else {
-                    if (btConnectPermission && btScanPermission) {
-                        val serverIntent = Intent(this, DeviceListActivity::class.java)
-                        resultLauncher.launch(serverIntent)
-                    } else {
-                        alertDialog(ERROR_NO_PERMISSION)
-                    }
-                }
-            }
-        }
-
-        if (tabLayout.selectedTabPosition == 0) {
-            ipLayout.visibility = View.VISIBLE
-            portLayout.visibility = View.VISIBLE
-            selectedDevice.visibility = View.GONE
-        } else if (tabLayout.selectedTabPosition == 1) {
-            // request bluetooth permissions
-            checkPermission("android.permission.BLUETOOTH_CONNECT", BLUETOOTH_PERMISSION_CODE)
-            checkPermission("android.permission.BLUETOOTH_SCAN", BLUETOOTH_SCAN_CODE)
-            ipLayout.visibility = View.GONE
-            portLayout.visibility = View.GONE
-            selectedDevice.visibility = View.VISIBLE
-        }
-
         connectButton.setOnClickListener {
-            // your code to perform when the user clicks on the button
-
-//            Toast.makeText(this@MainActivity, "You clicked me.", Toast.LENGTH_SHORT).show()
-            if (tabLayout.selectedTabPosition == 0) {
-                if (isNumericAddress(ipInput.text.toString()) && portInput.text.toString()
-                        .toInt() >= 0 && portInput.text.toString().toInt() <= 65535
-                ) {
-                    saveSharedPref()
-                    val intent = Intent(this, ControlActivity::class.java).apply {
-                        putExtra("interface", TAB_WIFI)
-                        putExtra("ip", ipInput.text.toString())
-                        putExtra("port", portInput.text.toString())
-                    }
-                    startActivity(intent)
-                } else if (!isNumericAddress(ipInput.text.toString())) {
-                    ipLayout.error = getString(R.string.invalid_ip)
-                } else {
-                    portLayout.error = getString(R.string.invalid_port)
+            if (isNumericAddress(ipInput.text.toString()) && portInput.text.toString()
+                    .toInt() >= 0 && portInput.text.toString().toInt() <= 65535
+            ) {
+                saveSharedPref()
+                val intent = Intent(this, ControlActivity::class.java).apply {
+                    putExtra("interface", TAB_WIFI)
+                    putExtra("ip", ipInput.text.toString())
+                    putExtra("port", portInput.text.toString())
                 }
-            } else if (tabLayout.selectedTabPosition == 1) {
-                if (btDeviceMac.text.isNotBlank()) {
-                    val bluetoothManager =
-                        this.mContext!!.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-                    val bluetoothAdapter: BluetoothAdapter? = bluetoothManager.adapter
-                    if (bluetoothAdapter != null) {
-                        if (!bluetoothAdapter.isEnabled) {
-                            alertDialog(ERROR_BLUETOOTH_DISABLED)
-                        } else {
-                            if (btConnectPermission && btScanPermission) {
-                                saveSharedPref()
-                                val intent = Intent(this, ControlActivity::class.java).apply {
-                                    putExtra("interface", TAB_BLUETOOTH)
-                                    putExtra("mac", btDeviceMac.text.toString())
-                                }
-                                startActivity(intent)
-                            } else {
-                                alertDialog(ERROR_NO_PERMISSION)
-                            }
-                        }
-                    }
-                } else {
-                    alertDialog(ERROR_NO_DEVICE)
-                }
+                startActivity(intent)
+            } else if (!isNumericAddress(ipInput.text.toString())) {
+                ipLayout.error = getString(R.string.invalid_ip)
+            } else {
+                portLayout.error = getString(R.string.invalid_port)
             }
         }
 
@@ -279,17 +178,6 @@ class MainActivity : AppCompatActivity() {
         ipInput.setText(prefs.getString(SHARED_PREFS_IP, "192.168.1.127"))
         portInput.setText(prefs.getString(SHARED_PREFS_PORT, "1234"))
 
-        val selectedTab = prefs.getString(SHARED_PREFS_TAB, TAB_WIFI)
-        if (selectedTab == TAB_WIFI) {
-            val tab = tabLayout.getTabAt(0)
-            tab!!.select()
-        } else if (selectedTab == TAB_BLUETOOTH) {
-            val tab = tabLayout.getTabAt(1)
-            tab!!.select()
-        }
-
-        btDeviceName.text = prefs.getString(SHARED_PREFS_DEVICE_NAME, "Click to select a device")
-        btDeviceMac.text = prefs.getString(SHARED_PREFS_DEVICE_ADDRESS, "")
     }
 
     private fun saveSharedPref() {
@@ -300,14 +188,6 @@ class MainActivity : AppCompatActivity() {
         val editor = prefs.edit()
         editor.putString(SHARED_PREFS_IP, ipInput.text.toString())
         editor.putString(SHARED_PREFS_PORT, portInput.text.toString())
-        if (tabLayout.selectedTabPosition == 0) {
-            editor.putString(SHARED_PREFS_TAB, TAB_WIFI)
-        } else if (tabLayout.selectedTabPosition == 1) {
-            editor.putString(SHARED_PREFS_TAB, TAB_BLUETOOTH)
-        }
-
-        editor.putString(SHARED_PREFS_DEVICE_NAME, btDeviceName.text.toString())
-        editor.putString(SHARED_PREFS_DEVICE_ADDRESS, btDeviceMac.text.toString())
 
         editor.apply()
     }

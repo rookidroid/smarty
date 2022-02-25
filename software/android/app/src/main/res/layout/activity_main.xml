@@ -25,12 +25,12 @@
             android:elevation="8dp">
 
             <ImageView
-                android:id="@+id/hexapod_logo"
+                android:id="@+id/smarty_logo"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:src="@drawable/hexapod_logo"
+                android:src="@drawable/ic_baseline_toys_24"
                 app:layout_constraintBottom_toTopOf="@id/tab"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

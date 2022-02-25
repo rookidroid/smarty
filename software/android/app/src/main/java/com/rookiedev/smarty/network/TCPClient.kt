@@ -1,4 +1,4 @@
-package com.rookiedev.hexapod.network
+package com.rookiedev.smarty.network
 
 import java.io.*
 import java.net.*
