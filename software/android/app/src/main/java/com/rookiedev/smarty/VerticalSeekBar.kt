@@ -12,15 +12,14 @@ import android.widget.SeekBar
 open class VerticalSeekBar : SeekBar {
     private var changeListener: OnSeekBarChangeListener? = null
 
-    constructor(context: Context?) : super(context!!) {}
+    constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
         context!!,
         attrs,
         defStyle
-    ) {
-    }
+    )
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {}
+    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(h, w, oldh, oldw)
@@ -44,9 +43,8 @@ open class VerticalSeekBar : SeekBar {
         }
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
-                var i = 0
                 val mHeight = height - paddingStart - paddingEnd
-                i = max - (max * (event.y - paddingStart) / mHeight).toInt()
+                var i = max - (max * (event.y - paddingStart) / mHeight).toInt()
                 if (i<0){
                     i=0
                 }
