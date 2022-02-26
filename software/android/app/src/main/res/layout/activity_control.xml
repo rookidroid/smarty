@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <com.rookiedev.smarty.VerticalSeekBar
+            <com.rookiedev.smarty.view.VerticalSeekBar
                 android:id="@+id/seekBar_l"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <com.rookiedev.smarty.VerticalSeekBar
+            <com.rookiedev.smarty.view.VerticalSeekBar
                 android:id="@+id/seekBar_r"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

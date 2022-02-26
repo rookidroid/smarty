@@ -3,7 +3,7 @@
         <shape
             android:shape="line">
             <stroke
-                android:color="@color/grey_500"
+                android:color="@color/green_500"
                 android:width="10dp"/>
         </shape>
     </item>
@@ -12,7 +12,7 @@
             <shape
                 android:shape="line">
                 <stroke
-                    android:color="@color/green_500"
+                    android:color="@color/red_500"
                     android:width="10dp"/>
             </shape>
         </clip>
@@ -23,7 +23,7 @@
             <shape
                 android:shape="line">
                 <stroke
-                    android:color="@color/green_500"
+                    android:color="@color/red_500"
                     android:width="10dp"/>
             </shape>
         </clip>

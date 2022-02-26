@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.SeekBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.rookiedev.smarty.network.TCPClient
+import com.rookiedev.smarty.view.VerticalSeekBar
 import kotlinx.coroutines.*
 
 
@@ -91,13 +92,11 @@ class ControlActivity : Activity() {
         seekBarLeft = findViewById(R.id.seekBar_l)
         seekBarRight = findViewById(R.id.seekBar_r)
 
-
         controlWindowInsets(true)
 
         progressBar = findViewById(R.id.progressBar)
 
         seekBarLeft!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "L"
                 val speed = i - 255
@@ -114,7 +113,6 @@ class ControlActivity : Activity() {
         })
 
         seekBarRight!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "R"
                 val speed = i - 255
@@ -132,7 +130,6 @@ class ControlActivity : Activity() {
 
     }
 
-    @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
         progressBar.visibility = View.VISIBLE
@@ -140,14 +137,11 @@ class ControlActivity : Activity() {
         this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
             override fun messageReceived(message: String?) {
                 if (message == null) {
-//                    alertDialog(DISCONNECTED)
                     println("no message")
                 }
             }
         }, object : TCPClient.OnConnectEstablished {
             override fun onConnected() {
-//                udpClient.start()
-                println("connected")
                 Handler(Looper.getMainLooper()).post {
                     progressBar.visibility = View.GONE
                 }
@@ -193,8 +187,7 @@ class ControlActivity : Activity() {
         // Starts a new coroutine within the scope
         scope.launch {
             // New coroutine that can call suspend functions
-
-            withContext(Dispatchers.IO) {              // Dispatchers.IO (main-safety block)
+            withContext(Dispatchers.IO) {
                 tcpClient?.sendMessage(message)
             }
         }
@@ -207,7 +200,7 @@ class ControlActivity : Activity() {
                 alert.setTitle("Error")
                 alert.setIcon(R.drawable.ic_baseline_error_24)
                 alert.setMessage(
-                    "Unable to connect to the Hexapod."
+                    "Unable to connect to the robot."
                 )
                 alert.setOnCancelListener { finish() }
                 alert.setButton(

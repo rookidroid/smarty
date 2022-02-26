@@ -1,4 +1,4 @@
-package com.rookiedev.smarty
+package com.rookiedev.smarty.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -37,6 +37,7 @@ open class VerticalSeekBar : SeekBar {
         super.onDraw(c)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (!isEnabled) {
             return false
@@ -52,7 +53,6 @@ open class VerticalSeekBar : SeekBar {
                     i=max
                 }
                 progress = i
-//                Log.i("Progress", progress.toString() + "")
                 changeListener?.onProgressChanged(this, progress, true)
                 onSizeChanged(width, height, 0, 0)
             }
