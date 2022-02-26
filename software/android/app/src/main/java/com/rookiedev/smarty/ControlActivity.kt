@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.rookiedev.smarty.network.TCPClient
 import com.rookiedev.smarty.view.VerticalSeekBar
 import kotlinx.coroutines.*
+import kotlin.math.floor
+import kotlin.math.round
 
 
 /**
@@ -76,6 +78,9 @@ class ControlActivity : Activity() {
     private var seekBarLeft: VerticalSeekBar? = null
     private var seekBarRight: VerticalSeekBar? = null
 
+    private var leftSpeed = 0
+    private var rightSpeed = 0
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,8 +104,11 @@ class ControlActivity : Activity() {
         seekBarLeft!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "L"
-                val speed = i - 255
-                sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+                val speed = ((i - 255)/10)*10
+                if (leftSpeed!=speed) {
+                    sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+                    leftSpeed=speed
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -115,8 +123,11 @@ class ControlActivity : Activity() {
         seekBarRight!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "R"
-                val speed = i - 255
-                sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+                val speed = ((i - 255)/10)*10
+                if (rightSpeed!=speed) {
+                    sendMessageAsync(msg.plus(speed.toString()).plus(":"))
+                    rightSpeed = speed
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -159,6 +170,8 @@ class ControlActivity : Activity() {
 
         seekBarLeft!!.progress = 255
         seekBarRight!!.progress = 255
+        leftSpeed = 0
+        rightSpeed = 0
     }
 
     override fun onPause() {
