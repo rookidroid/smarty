@@ -62,7 +62,7 @@ class TCPClient(
 //        isNewData = true
 
         if (this.tcpOut != null && !this.tcpOut!!.checkError()) {
-            println("send message")
+//            println("send message")
             this.tcpOut!!.print(message)
             this.tcpOut!!.flush()
         }

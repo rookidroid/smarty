@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.*
 import android.widget.SeekBar
-import androidx.appcompat.widget.AppCompatSeekBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.rookiedev.smarty.network.TCPClient
 import kotlinx.coroutines.*
@@ -63,46 +62,6 @@ enum class TypeOption(
 }
 
 class ControlActivity : Activity() {
-    companion object {
-        private const val CMD_STANDBY = "standby:"
-        private const val CMD_LAYDOWN = "laydown:"
-
-        private const val CMD_WALK_0 = "walk0:"
-        private const val CMD_WALK_180 = "walk180:"
-
-        private const val CMD_WALK_R45 = "walkr45:"
-        private const val CMD_WALK_R90 = "walkr90:"
-        private const val CMD_WALK_R135 = "walkr135:"
-
-        private const val CMD_WALK_L45 = "walkl45:"
-        private const val CMD_WALK_L90 = "walkl90:"
-        private const val CMD_WALK_L135 = "walkl135:"
-
-        private const val CMD_FASTFORWARD = "fastforward:"
-        private const val CMD_FASTBACKWARD = "fastbackward:"
-
-        private const val CMD_TURNLEFT = "turnleft:"
-        private const val CMD_TURNRIGHT = "turnright:"
-
-        private const val CMD_CLIMBFORWARD = "climbforward:"
-        private const val CMD_CLIMBBACKWARD = "climbbackward:"
-
-        private const val CMD_ROTATEX = "rotatex:"
-        private const val CMD_ROTATEY = "rotatey:"
-        private const val CMD_ROTATEZ = "rotatez:"
-
-        private const val CMD_TWIST = "twist:"
-    }
-
-    private var rightWidth = 0
-    private var rightHeight = 0
-    private var rightRadius = 0f
-
-    private var leftWidth = 0
-    private var leftHeight = 0
-
-    private var connectInterface: String = ""
-
     private var mContext: Context? = null
 
     private var tcpClient: TCPClient? = null
@@ -111,7 +70,6 @@ class ControlActivity : Activity() {
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)
 
-    private var currentState: String = CMD_STANDBY
     private lateinit var progressBar: ConstraintLayout
 
     private var seekBarLeft: VerticalSeekBar? = null
@@ -209,8 +167,6 @@ class ControlActivity : Activity() {
         )
         this.tcpClient!!.start()
 
-
-        currentState = CMD_STANDBY
         seekBarLeft!!.progress = 255
         seekBarRight!!.progress = 255
     }

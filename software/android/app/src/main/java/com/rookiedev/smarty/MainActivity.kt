@@ -22,18 +22,9 @@ import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {
     companion object {
-        private const val BLUETOOTH_PERMISSION_CODE = 100
-        private const val BLUETOOTH_SCAN_CODE = 101
-
         private const val SHARED_PREFS_NAME = "com.rookiedev.smarty_preferences"
         private const val SHARED_PREFS_IP = "IP"
         private const val SHARED_PREFS_PORT = "PORT"
-        private const val SHARED_PREFS_TAB = "TAB"
-        private const val SHARED_PREFS_DEVICE_NAME = "DEVICE_NAME"
-        private const val SHARED_PREFS_DEVICE_ADDRESS = "DEVICE_ADDRESS"
-
-        private const val TAB_WIFI = "WiFi"
-        private const val TAB_BLUETOOTH = "Bluetooth"
 
         private const val ERROR_NO_PERMISSION = 0
         private const val ERROR_NO_DEVICE = 1
@@ -42,23 +33,14 @@ class MainActivity : AppCompatActivity() {
 
     private var mContext: Context? = null
 
-    private lateinit var tabLayout: TabLayout
-
     private lateinit var ipInput: TextInputEditText
     private lateinit var portInput: TextInputEditText
-
-    private lateinit var btDeviceName: TextView
-    private lateinit var btDeviceMac: TextView
-
-    private var btConnectPermission = false
-    private var btScanPermission = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         mContext = applicationContext
-
 
         // TCP
         val ipLayout = findViewById<TextInputLayout>(R.id.ip_input_layout)
@@ -82,7 +64,6 @@ class MainActivity : AppCompatActivity() {
             ) {
                 saveSharedPref()
                 val intent = Intent(this, ControlActivity::class.java).apply {
-                    putExtra("interface", TAB_WIFI)
                     putExtra("ip", ipInput.text.toString())
                     putExtra("port", portInput.text.toString())
                 }
@@ -114,60 +95,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                btDeviceName.text = data!!.getStringExtra("device_name")
-                btDeviceMac.text = data.getStringExtra("device_address")
-            }
-        }
-
-    // Function to check and request permission.
-    private fun checkPermission(permission: String, requestCode: Int) {
-        println(permission)
-        if (ActivityCompat.checkSelfPermission(
-                this@MainActivity,
-                permission
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            // Requesting the permission
-            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(permission), requestCode)
-        } else {
-            // Permission already granted
-            if (requestCode == BLUETOOTH_PERMISSION_CODE) {
-                btConnectPermission = true
-            } else if (requestCode == BLUETOOTH_SCAN_CODE) {
-                btScanPermission = true
-            }
-        }
-    }
-
-    // This function is called when the user accepts or decline the permission.
-    // Request Code is used to check which permission called this function.
-    // This request code is provided when the user is prompt for permission.
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == BLUETOOTH_PERMISSION_CODE) {
-            btConnectPermission =
-                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        } else if (requestCode == BLUETOOTH_SCAN_CODE) {
-            println("scan permission")
-            btScanPermission =
-                grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-        }
-    }
-
     override fun onPause() {
         super.onPause()
         saveSharedPref()
     }
-
 
     private fun readSharedPref() {
         val prefs = getSharedPreferences(
