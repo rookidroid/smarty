@@ -47,9 +47,15 @@ open class VerticalSeekBar : SeekBar {
                 var i = 0
                 val mHeight = height - paddingStart - paddingEnd
                 i = max - (max * (event.y - paddingStart) / mHeight).toInt()
+                if (i<0){
+                    i=0
+                }
+                if (i>max){
+                    i=max
+                }
                 progress = i
 //                Log.i("Progress", progress.toString() + "")
-                changeListener?.onProgressChanged(this, i, true)
+                changeListener?.onProgressChanged(this, progress, true)
                 onSizeChanged(width, height, 0, 0)
             }
             MotionEvent.ACTION_DOWN -> {
