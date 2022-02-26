@@ -99,8 +99,6 @@ class ControlActivity : Activity() {
         seekBarLeft!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                // Display the current progress of SeekBar
-//                println(i)
                 val msg = "L"
                 val speed = i - 255
                 sendMessageAsync(msg.plus(speed.toString()).plus(":"))
@@ -118,8 +116,6 @@ class ControlActivity : Activity() {
         seekBarRight!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                // Display the current progress of SeekBar
-//                println(i)
                 val msg = "R"
                 val speed = i - 255
                 sendMessageAsync(msg.plus(speed.toString()).plus(":"))
@@ -223,5 +219,3 @@ class ControlActivity : Activity() {
         alert.show()
     }
 }
-
-

@@ -3,7 +3,6 @@ package com.rookiedev.smarty.network
 import java.io.*
 import java.net.*
 
-
 class TCPClient(
     ip: String?,
     port: Int,
@@ -39,10 +38,7 @@ class TCPClient(
                 sleep(1000)
             }
         } catch (e: InterruptedException) {
-//            controller.cancelProgressDialog(java.lang.ModuleLayer.Controller.SERVERALERT)
             println(e)
-//            controller.alertDialog(0)
-//            onDisconnected!!.onDisconnected()
         } catch (e: SocketTimeoutException) {
             println(e)
             onDisconnected!!.onDisconnected()
@@ -58,11 +54,7 @@ class TCPClient(
      * @param message text entered by client
      */
     fun sendMessage(message: String?) {
-//        newMessage = message
-//        isNewData = true
-
         if (this.tcpOut != null && !this.tcpOut!!.checkError()) {
-//            println("send message")
             this.tcpOut!!.print(message)
             this.tcpOut!!.flush()
         }
@@ -97,7 +89,5 @@ class TCPClient(
             // TODO Auto-generated catch block
             e.printStackTrace()
         }
-
     }
-
 }

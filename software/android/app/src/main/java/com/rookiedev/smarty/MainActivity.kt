@@ -1,10 +1,7 @@
 package com.rookiedev.smarty
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.InetAddresses.isNumericAddress
 import android.os.Bundle
 import android.text.Editable
@@ -12,10 +9,7 @@ import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -25,10 +19,6 @@ class MainActivity : AppCompatActivity() {
         private const val SHARED_PREFS_NAME = "com.rookiedev.smarty_preferences"
         private const val SHARED_PREFS_IP = "IP"
         private const val SHARED_PREFS_PORT = "PORT"
-
-        private const val ERROR_NO_PERMISSION = 0
-        private const val ERROR_NO_DEVICE = 1
-        private const val ERROR_BLUETOOTH_DISABLED = 2
     }
 
     private var mContext: Context? = null
@@ -121,48 +111,5 @@ class MainActivity : AppCompatActivity() {
         editor.putString(SHARED_PREFS_PORT, portInput.text.toString())
 
         editor.apply()
-    }
-
-    private fun alertDialog(type: Int) {
-        val alert: AlertDialog = AlertDialog.Builder(this).create()
-        when (type) {
-            ERROR_NO_PERMISSION -> {
-                alert.setTitle("Permission Error")
-                alert.setIcon(R.drawable.ic_baseline_error_24)
-                alert.setMessage(
-                    "Bluetooth permission is required. Please enable the permission in Settings."
-                )
-                alert.setOnCancelListener { }
-                alert.setButton(
-                    AlertDialog.BUTTON_POSITIVE,
-                    "OK"
-                ) { _, _ -> }
-            }
-            ERROR_NO_DEVICE -> {
-                alert.setTitle("Empty Device")
-                alert.setIcon(R.drawable.ic_baseline_error_24)
-                alert.setMessage(
-                    "Please select a Bluetooth device."
-                )
-                alert.setOnCancelListener { }
-                alert.setButton(
-                    AlertDialog.BUTTON_POSITIVE,
-                    "OK"
-                ) { _, _ -> }
-            }
-            ERROR_BLUETOOTH_DISABLED -> {
-                alert.setTitle("Bluetooth Disabled")
-                alert.setIcon(R.drawable.ic_baseline_error_24)
-                alert.setMessage(
-                    "Please enable Bluetooth in Settings"
-                )
-                alert.setOnCancelListener { }
-                alert.setButton(
-                    AlertDialog.BUTTON_POSITIVE,
-                    "OK"
-                ) { _, _ -> }
-            }
-        }
-        alert.show()
     }
 }
