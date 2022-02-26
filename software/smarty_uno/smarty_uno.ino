@@ -37,11 +37,15 @@ void loop()
     // R_motor.run(RELEASE);
     // L_motor.run(RELEASE);
 
-    if (inputString == "connected" || inputString == "disconnected" || inputString == "L0" || inputString == "R0")
+    if (inputString == "connected" || inputString == "disconnected")
     {
       //      Serial.print("stop");
       R_motor.run(RELEASE); // turns L motor on
       L_motor.run(RELEASE); // turns R motor on
+    }else if(inputString == "L0"){
+      L_motor.run(RELEASE);
+    }else if(inputString == "R0"){
+      R_motor.run(RELEASE);
     }
     else if (inputString[0] == 'L')
     {
