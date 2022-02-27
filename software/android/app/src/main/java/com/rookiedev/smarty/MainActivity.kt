@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             MODE_PRIVATE
         )
         // read values from the shared preferences
-        ipInput.setText(prefs.getString(SHARED_PREFS_IP, "192.168.1.127"))
+        ipInput.setText(prefs.getString(SHARED_PREFS_IP, "192.168.4.1"))
         portInput.setText(prefs.getString(SHARED_PREFS_PORT, "1234"))
 
     }
