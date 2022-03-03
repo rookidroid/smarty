@@ -31,7 +31,7 @@
 /* Create a WiFi access point and provide a web server on it. */
 
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
+#include <WiFiUdp.h>
 
 #ifndef APSSID
 #define APSSID "smartyrobot"
@@ -42,9 +42,13 @@
 const char *ssid = APSSID;
 const char *password = APPSK;
 
+// buffers for receiving and sending data
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE + 1]; //buffer to hold incoming packet,
+char  ReplyBuffer[] = "acknowledged\r\n";       // a string to send back
+
 unsigned int localPort = 1234; // local port to listen on
 
-WiFiServer server(localPort);
+WiFiUDP Udp;
 
 void setup()
 {
@@ -59,34 +63,19 @@ void setup()
   //  Serial.print("AP IP address: ");
   //  Serial.println(myIP);
 
-  server.begin();
+  Udp.begin(localPort);
 }
 
 void loop()
 {
-  WiFiClient client = server.available();
+  // if there's data available, read a packet
+  int packetSize = Udp.parsePacket();
+  if (packetSize) {
 
-  if (client)
-  {
-    if (client.connected())
-    {
-      Serial.print("connected:");
-    }
+    // read the packet into packetBufffer
+    int n = Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+    packetBuffer[n] = 0;
 
-    while (client.connected())
-    {
-      while (client.available() > 0)
-      {
-        // read data from the connected client
-        Serial.write(client.read());
-      }
-      // Send Data to connected client
-      while (Serial.available() > 0)
-      {
-        client.write(Serial.read());
-      }
-    }
-    client.stop();
-    Serial.print("disconnected:");
+    Serial.print(packetBuffer);
   }
 }
