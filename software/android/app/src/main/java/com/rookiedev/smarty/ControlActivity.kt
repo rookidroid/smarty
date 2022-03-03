@@ -13,8 +13,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.rookiedev.smarty.network.TCPClient
 import com.rookiedev.smarty.view.VerticalSeekBar
 import kotlinx.coroutines.*
-import kotlin.math.floor
-import kotlin.math.round
+import java.io.IOException
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.net.SocketException
 
 
 /**
@@ -81,6 +84,8 @@ class ControlActivity : Activity() {
     private var leftSpeed = 0
     private var rightSpeed = 0
 
+    private var UDPSocket: DatagramSocket? = null
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,34 +144,47 @@ class ControlActivity : Activity() {
             }
         })
 
+        try {
+            UDPSocket = DatagramSocket()
+        } catch (e1: SocketException) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace()
+        }
+        try {
+            UDPSocket!!.soTimeout = 3000 // set receive wait time
+        } catch (e1: SocketException) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace()
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
-        progressBar.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
 
-        this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
-            override fun messageReceived(message: String?) {
-                if (message == null) {
-                    println("no message")
-                }
-            }
-        }, object : TCPClient.OnConnectEstablished {
-            override fun onConnected() {
-                Handler(Looper.getMainLooper()).post {
-                    progressBar.visibility = View.GONE
-                }
-            }
-        }, object : TCPClient.OnDisconnected {
-            override fun onDisconnected() {
-                Handler(Looper.getMainLooper()).post {
-                    progressBar.visibility = View.GONE
-                    alertDialog(0)
-                }
-            }
-        }
-        )
-        this.tcpClient!!.start()
+//        this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
+//            override fun messageReceived(message: String?) {
+//                if (message == null) {
+//                    println("no message")
+//                }
+//            }
+//        }, object : TCPClient.OnConnectEstablished {
+//            override fun onConnected() {
+//                Handler(Looper.getMainLooper()).post {
+//                    progressBar.visibility = View.GONE
+//                }
+//            }
+//        }, object : TCPClient.OnDisconnected {
+//            override fun onDisconnected() {
+//                Handler(Looper.getMainLooper()).post {
+//                    progressBar.visibility = View.GONE
+//                    alertDialog(0)
+//                }
+//            }
+//        }
+//        )
+//        this.tcpClient!!.start()
 
         seekBarLeft!!.progress = 255
         seekBarRight!!.progress = 255
@@ -176,8 +194,8 @@ class ControlActivity : Activity() {
 
     override fun onPause() {
         super.onPause()
-        tcpClient!!.stopClient()
-        tcpClient!!.interrupt()
+//        tcpClient!!.stopClient()
+//        tcpClient!!.interrupt()
     }
 
 
@@ -201,8 +219,25 @@ class ControlActivity : Activity() {
         scope.launch {
             // New coroutine that can call suspend functions
             withContext(Dispatchers.IO) {
-                tcpClient?.sendMessage(message)
+//                tcpClient?.sendMessage(message)
+                sendUdpMessage(message)
             }
+
+        }
+    }
+
+
+    fun sendUdpMessage(UDPMessage: String){
+        val bufferData = UDPMessage.toByteArray()
+        val UDPOut = DatagramPacket(
+            bufferData, bufferData.count(),
+            InetAddress.getByName(ip), port
+        )
+        try {
+            UDPSocket!!.send(UDPOut)
+        } catch (e: IOException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
         }
     }
 
