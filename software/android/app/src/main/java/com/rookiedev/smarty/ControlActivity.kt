@@ -2,15 +2,11 @@ package com.rookiedev.smarty
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import android.widget.SeekBar
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.rookiedev.smarty.network.TCPClient
 import com.rookiedev.smarty.view.VerticalSeekBar
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -69,8 +65,6 @@ enum class TypeOption(
 
 class ControlActivity : Activity() {
     private var mContext: Context? = null
-
-    private var tcpClient: TCPClient? = null
     private var ip: String = ""
     private var port = 0
 
@@ -163,41 +157,11 @@ class ControlActivity : Activity() {
         super.onResume()
         progressBar.visibility = View.GONE
 
-//        this.tcpClient = TCPClient(ip, port, object : TCPClient.OnMessageReceived {
-//            override fun messageReceived(message: String?) {
-//                if (message == null) {
-//                    println("no message")
-//                }
-//            }
-//        }, object : TCPClient.OnConnectEstablished {
-//            override fun onConnected() {
-//                Handler(Looper.getMainLooper()).post {
-//                    progressBar.visibility = View.GONE
-//                }
-//            }
-//        }, object : TCPClient.OnDisconnected {
-//            override fun onDisconnected() {
-//                Handler(Looper.getMainLooper()).post {
-//                    progressBar.visibility = View.GONE
-//                    alertDialog(0)
-//                }
-//            }
-//        }
-//        )
-//        this.tcpClient!!.start()
-
         seekBarLeft!!.progress = 255
         seekBarRight!!.progress = 255
         leftSpeed = 0
         rightSpeed = 0
     }
-
-    override fun onPause() {
-        super.onPause()
-//        tcpClient!!.stopClient()
-//        tcpClient!!.interrupt()
-    }
-
 
     private fun controlWindowInsets(hide: Boolean) {
         // WindowInsetsController can hide or show specified system bars.
@@ -226,37 +190,17 @@ class ControlActivity : Activity() {
         }
     }
 
-
-    fun sendUdpMessage(UDPMessage: String){
+    private fun sendUdpMessage(UDPMessage: String){
         val bufferData = UDPMessage.toByteArray()
-        val UDPOut = DatagramPacket(
+        val udpOut = DatagramPacket(
             bufferData, bufferData.count(),
             InetAddress.getByName(ip), port
         )
         try {
-            UDPSocket!!.send(UDPOut)
+            UDPSocket!!.send(udpOut)
         } catch (e: IOException) {
             // TODO Auto-generated catch block
             e.printStackTrace()
         }
-    }
-
-    fun alertDialog(type: Int) {
-        val alert: AlertDialog = AlertDialog.Builder(this).create()
-        when (type) {
-            0 -> {
-                alert.setTitle("Error")
-                alert.setIcon(R.drawable.ic_baseline_error_24)
-                alert.setMessage(
-                    "Unable to connect to the robot."
-                )
-                alert.setOnCancelListener { finish() }
-                alert.setButton(
-                    AlertDialog.BUTTON_POSITIVE,
-                    "OK"
-                ) { _, _ -> finish() }
-            }
-        }
-        alert.show()
     }
 }
