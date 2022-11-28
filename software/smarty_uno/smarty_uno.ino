@@ -1,97 +1,134 @@
-#include <AFMotor.h>
-// you'll need an Adafruit Motor shield V1 https://goo.gl/7MvZeo
+#include <WiFi.h>
+#include <WiFiUdp.h>
 
-AF_DCMotor R_motor(2); // defines Right motor connector
-AF_DCMotor L_motor(1); // defines Left motor connector
+#include <ESP32Servo.h>
 
-// defines variables
-long duration;
+#ifndef APSSID
+#define APSSID "tank"
+#define APPSK "tank1234"
+#endif
 
-String inputString = "";     // a String to hold incoming data
-bool stringComplete = false; // whether the string is complete
+/* Set these to your desired credentials. */
+const char *ssid = APSSID;
+const char *password = APPSK;
 
-int sLength;
-String tempStr;
-int motorSpeed;
+// buffers for receiving and sending data
+char packetBuffer[4096 + 1];             // buffer to hold incoming packet,
+char ReplyBuffer[] = "acknowledged\r\n"; // a string to send back
+
+unsigned int localPort = 1234; // local port to listen on
+
+WiFiUDP Udp;
+
+// GPIO pin number for the LEDs
+#define PIN_L1 27
+#define PIN_L2 26
+#define PIN_R1 25
+#define PIN_R2 33
+
+
+// PWM channels
+#define PWM_L1 0
+#define PWM_L2 1
+#define PWM_R1 2
+#define PWM_R2 3
+
+
+// PWM properties
+const int pwmFreq = 5000;
+const int pwmResolution = 8;
+
+
 
 void setup()
 {
+  Serial.begin(921600);
 
-  Serial.begin(115200); // sets up Serial library at 9600 bps
+  // configure LED PWM functionalitites
+    pinMode(PIN_L1, OUTPUT);
+    pinMode(PIN_L2, OUTPUT);
+    pinMode(PIN_R1, OUTPUT);
+    pinMode(PIN_R2, OUTPUT);
 
-  //  Serial.println("start");
+    ledcSetup(PWM_L1, pwmFreq, pwmResolution);
+    ledcAttachPin(PIN_L1, PWM_L1);
 
-  // changes the following values to make the robot  drive as straight as possible
+    ledcSetup(PWM_L2, pwmFreq, pwmResolution);
+    ledcAttachPin(PIN_L2, PWM_L2);
 
-  L_motor.setSpeed(200); // sets L motor speed
-  R_motor.setSpeed(140); // sets R motor speed
+    ledcSetup(PWM_R1, pwmFreq, pwmResolution);
+    ledcAttachPin(PIN_R1, PWM_R1);
 
-  R_motor.run(RELEASE); // turns L motor on
-  L_motor.run(RELEASE); // turns R motor on
+    ledcSetup(PWM_R2, pwmFreq, pwmResolution);
+    ledcAttachPin(PIN_R2, PWM_R2);
 }
 
 void loop()
 {
-  if (stringComplete)
-  {
-    // R_motor.run(RELEASE);
-    // L_motor.run(RELEASE);
-
-    if (inputString == "connected" || inputString == "disconnected")
-    {
-      //      Serial.print("stop");
-      R_motor.run(RELEASE); // turns L motor on
-      L_motor.run(RELEASE); // turns R motor on
-    }else if(inputString == "L0"){
-      L_motor.run(RELEASE);
-    }else if(inputString == "R0"){
-      R_motor.run(RELEASE);
-    }
-    else if (inputString[0] == 'L')
-    {
-      if (inputString[1] == '-')
-      {
-        sLength = inputString.length();
-        tempStr = inputString.substring(2, sLength);
-        motorSpeed = tempStr.toInt();
-        L_motor.setSpeed(motorSpeed);
-        //        Serial.print(motorSpeed);
-        L_motor.run(BACKWARD);
-      }
-      else
-      {
-        sLength = inputString.length();
-        tempStr = inputString.substring(1, sLength);
-        motorSpeed = tempStr.toInt();
-        L_motor.setSpeed(motorSpeed);
-        //        Serial.print(motorSpeed);
-        L_motor.run(FORWARD);
-      }
-    }
-    else if (inputString[0] == 'R')
-    {
-      if (inputString[1] == '-')
-      {
-        sLength = inputString.length();
-        tempStr = inputString.substring(2, sLength);
-        motorSpeed = tempStr.toInt();
-        R_motor.setSpeed(motorSpeed);
-        //        Serial.print(motorSpeed);
-        R_motor.run(BACKWARD);
-      }
-      else
-      {
-        sLength = inputString.length();
-        tempStr = inputString.substring(1, sLength);
-        motorSpeed = tempStr.toInt();
-        R_motor.setSpeed(motorSpeed);
-        //        Serial.print(motorSpeed);
-        R_motor.run(FORWARD);
-      }
-    }
-    stringComplete = false;
-    inputString = "";
-  }
+  ledcWrite(PWM_L1, 255);
+  ledcWrite(PWM_L2, 0);
+  ledcWrite(PWM_R1, 255);
+  ledcWrite(PWM_R2, 0);
+//  if (stringComplete)  
+//  {
+//    // R_motor.run(RELEASE);
+//    // L_motor.run(RELEASE);
+//
+//    if (inputString == "connected" || inputString == "disconnected")
+//    {
+//      //      Serial.print("stop");
+//      R_motor.run(RELEASE); // turns L motor on
+//      L_motor.run(RELEASE); // turns R motor on
+//    }else if(inputString == "L0"){
+//      L_motor.run(RELEASE);
+//    }else if(inputString == "R0"){
+//      R_motor.run(RELEASE);
+//    }
+//    else if (inputString[0] == 'L')
+//    {
+//      if (inputString[1] == '-')
+//      {
+//        sLength = inputString.length();
+//        tempStr = inputString.substring(2, sLength);
+//        motorSpeed = tempStr.toInt();
+//        L_motor.setSpeed(motorSpeed);
+//        //        Serial.print(motorSpeed);
+//        L_motor.run(BACKWARD);
+//      }
+//      else
+//      {
+//        sLength = inputString.length();
+//        tempStr = inputString.substring(1, sLength);
+//        motorSpeed = tempStr.toInt();
+//        L_motor.setSpeed(motorSpeed);
+//        //        Serial.print(motorSpeed);
+//        L_motor.run(FORWARD);
+//      }
+//    }
+//    else if (inputString[0] == 'R')
+//    {
+//      if (inputString[1] == '-')
+//      {
+//        sLength = inputString.length();
+//        tempStr = inputString.substring(2, sLength);
+//        motorSpeed = tempStr.toInt();
+//        R_motor.setSpeed(motorSpeed);
+//        //        Serial.print(motorSpeed);
+//        R_motor.run(BACKWARD);
+//      }
+//      else
+//      {
+//        sLength = inputString.length();
+//        tempStr = inputString.substring(1, sLength);
+//        motorSpeed = tempStr.toInt();
+//        R_motor.setSpeed(motorSpeed);
+//        //        Serial.print(motorSpeed);
+//        R_motor.run(FORWARD);
+//      }
+//    }
+//    stringComplete = false;
+//    inputString = "";
+//  }
 }
 
 /*
@@ -99,23 +136,23 @@ void loop()
   routine is run between each time loop() runs, so using delay inside loop can
   delay response. Multiple bytes of data may be available.
 */
-void serialEvent()
-{
-  while (Serial.available())
-  {
-    // get the new byte:
-    char inChar = (char)Serial.read();
-
-    // if the incoming character is a newline, set a flag so the main loop can
-    // do something about it:
-    if (inChar == ':')
-    {
-      stringComplete = true;
-    }
-    else if (inChar != '\n')
-    {
-      // add it to the inputString:
-      inputString += inChar;
-    }
-  }
-}
+//void serialEvent()
+//{
+//  while (Serial.available())
+//  {
+//    // get the new byte:
+//    char inChar = (char)Serial.read();
+//
+//    // if the incoming character is a newline, set a flag so the main loop can
+//    // do something about it:
+//    if (inChar == ':')
+//    {
+//      stringComplete = true;
+//    }
+//    else if (inChar != '\n')
+//    {
+//      // add it to the inputString:
+//      inputString += inChar;
+//    }
+//  }
+//}
