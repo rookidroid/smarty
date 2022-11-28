@@ -1,11 +1,11 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
-#include <ESP32Servo.h>
+// #include <ESP32Servo.h>
 
 #ifndef APSSID
-#define APSSID "tank"
-#define APPSK "tank1234"
+#define APSSID "smartyrobot"
+#define APPSK "smartyrobot"
 #endif
 
 /* Set these to your desired credentials. */
@@ -26,133 +26,146 @@ WiFiUDP Udp;
 #define PIN_R1 25
 #define PIN_R2 33
 
-
 // PWM channels
 #define PWM_L1 0
 #define PWM_L2 1
 #define PWM_R1 2
 #define PWM_R2 3
 
-
 // PWM properties
 const int pwmFreq = 5000;
 const int pwmResolution = 8;
 
+int right_speed = 0;
+int left_speed = 0;
+int x_val, y_val;
+bool rover;
 
+int str_idx;
+String inputString = "";
+
+void set_right_motor(int speed)
+{
+  if (speed >= 0)
+  {
+    ledcWrite(PWM_R1, speed);
+    ledcWrite(PWM_R2, 0);
+  }
+  else
+  {
+    ledcWrite(PWM_R1, 0);
+    ledcWrite(PWM_R2, -speed);
+  }
+}
+
+void set_left_motor(int speed)
+{
+  if (speed >= 0)
+  {
+    ledcWrite(PWM_L1, speed);
+    ledcWrite(PWM_L2, 0);
+  }
+  else
+  {
+    ledcWrite(PWM_L1, 0);
+    ledcWrite(PWM_L2, -speed);
+  }
+}
 
 void setup()
 {
-  Serial.begin(921600);
+  Serial.begin(115200);
+
+  WiFi.softAP(ssid, password);
+
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+
+  Udp.begin(localPort);
 
   // configure LED PWM functionalitites
-    pinMode(PIN_L1, OUTPUT);
-    pinMode(PIN_L2, OUTPUT);
-    pinMode(PIN_R1, OUTPUT);
-    pinMode(PIN_R2, OUTPUT);
+  pinMode(PIN_L1, OUTPUT);
+  pinMode(PIN_L2, OUTPUT);
+  pinMode(PIN_R1, OUTPUT);
+  pinMode(PIN_R2, OUTPUT);
 
-    ledcSetup(PWM_L1, pwmFreq, pwmResolution);
-    ledcAttachPin(PIN_L1, PWM_L1);
+  ledcSetup(PWM_L1, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_L1, PWM_L1);
 
-    ledcSetup(PWM_L2, pwmFreq, pwmResolution);
-    ledcAttachPin(PIN_L2, PWM_L2);
+  ledcSetup(PWM_L2, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_L2, PWM_L2);
 
-    ledcSetup(PWM_R1, pwmFreq, pwmResolution);
-    ledcAttachPin(PIN_R1, PWM_R1);
+  ledcSetup(PWM_R1, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_R1, PWM_R1);
 
-    ledcSetup(PWM_R2, pwmFreq, pwmResolution);
-    ledcAttachPin(PIN_R2, PWM_R2);
+  ledcSetup(PWM_R2, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_R2, PWM_R2);
+
+  set_left_motor(0);
+  set_right_motor(0);
 }
 
 void loop()
 {
-  ledcWrite(PWM_L1, 255);
-  ledcWrite(PWM_L2, 0);
-  ledcWrite(PWM_R1, 255);
-  ledcWrite(PWM_R2, 0);
-//  if (stringComplete)  
-//  {
-//    // R_motor.run(RELEASE);
-//    // L_motor.run(RELEASE);
-//
-//    if (inputString == "connected" || inputString == "disconnected")
-//    {
-//      //      Serial.print("stop");
-//      R_motor.run(RELEASE); // turns L motor on
-//      L_motor.run(RELEASE); // turns R motor on
-//    }else if(inputString == "L0"){
-//      L_motor.run(RELEASE);
-//    }else if(inputString == "R0"){
-//      R_motor.run(RELEASE);
-//    }
-//    else if (inputString[0] == 'L')
-//    {
-//      if (inputString[1] == '-')
-//      {
-//        sLength = inputString.length();
-//        tempStr = inputString.substring(2, sLength);
-//        motorSpeed = tempStr.toInt();
-//        L_motor.setSpeed(motorSpeed);
-//        //        Serial.print(motorSpeed);
-//        L_motor.run(BACKWARD);
-//      }
-//      else
-//      {
-//        sLength = inputString.length();
-//        tempStr = inputString.substring(1, sLength);
-//        motorSpeed = tempStr.toInt();
-//        L_motor.setSpeed(motorSpeed);
-//        //        Serial.print(motorSpeed);
-//        L_motor.run(FORWARD);
-//      }
-//    }
-//    else if (inputString[0] == 'R')
-//    {
-//      if (inputString[1] == '-')
-//      {
-//        sLength = inputString.length();
-//        tempStr = inputString.substring(2, sLength);
-//        motorSpeed = tempStr.toInt();
-//        R_motor.setSpeed(motorSpeed);
-//        //        Serial.print(motorSpeed);
-//        R_motor.run(BACKWARD);
-//      }
-//      else
-//      {
-//        sLength = inputString.length();
-//        tempStr = inputString.substring(1, sLength);
-//        motorSpeed = tempStr.toInt();
-//        R_motor.setSpeed(motorSpeed);
-//        //        Serial.print(motorSpeed);
-//        R_motor.run(FORWARD);
-//      }
-//    }
-//    stringComplete = false;
-//    inputString = "";
-//  }
-}
+  int packetSize = Udp.parsePacket();
+  if (packetSize)
+  {
+    rover = false;
+    // read the packet into packetBufffer
+    int n = Udp.read(packetBuffer, 4096);
+    packetBuffer[n] = 0;
 
-/*
-  SerialEvent occurs whenever a new data comes in the hardware serial RX. This
-  routine is run between each time loop() runs, so using delay inside loop can
-  delay response. Multiple bytes of data may be available.
-*/
-//void serialEvent()
-//{
-//  while (Serial.available())
-//  {
-//    // get the new byte:
-//    char inChar = (char)Serial.read();
-//
-//    // if the incoming character is a newline, set a flag so the main loop can
-//    // do something about it:
-//    if (inChar == ':')
-//    {
-//      stringComplete = true;
-//    }
-//    else if (inChar != '\n')
-//    {
-//      // add it to the inputString:
-//      inputString += inChar;
-//    }
-//  }
-//}
+    for (str_idx = 0; str_idx < n; str_idx++)
+    {
+      char inChar = packetBuffer[str_idx];
+      //      Serial.print(inChar);
+      //      Serial.print("\n");
+
+      if (inChar != '\n' && inChar != ':')
+      {
+        // add it to the inputString:
+        inputString += inChar;
+      }
+      else if (inChar == ':')
+      {
+        if (inputString[0] == 'X')
+        {
+          int sLength = inputString.length();
+          String tempStr = inputString.substring(1, sLength);
+          x_val = tempStr.toInt();
+          rover = true;
+        }
+        else if (inputString[0] == 'Y')
+        {
+          int sLength = inputString.length();
+          String tempStr = inputString.substring(1, sLength);
+          y_val = tempStr.toInt();
+          rover = true;
+        }
+        else if (inputString[0] == 'L')
+        {
+          int sLength = inputString.length();
+          String tempStr = inputString.substring(1, sLength);
+          left_speed = tempStr.toInt();
+          set_left_motor(left_speed);
+          // rover = true;
+        }
+        else if (inputString[0] == 'R')
+        {
+          int sLength = inputString.length();
+          String tempStr = inputString.substring(1, sLength);
+          right_speed = tempStr.toInt();
+          set_right_motor(right_speed);
+          // rover = true;
+        }
+
+        inputString = "";
+      }
+    }
+  }
+
+  if (rover)
+  {
+  }
+}
