@@ -1,40 +1,73 @@
+/*
+ *
+ *    This sketch is for the smarty rover
+ *
+ *    ----------
+ *    Copyright (C) 2022 - PRESENT  Zhengyu Peng
+ *    Website: https://zpeng.me
+ *
+ *    `                      `
+ *    -:.                  -#:
+ *    -//:.              -###:
+ *    -////:.          -#####:
+ *    -/:.://:.      -###++##:
+ *    ..   `://:-  -###+. :##:
+ *           `:/+####+.   :##:
+ *    .::::::::/+###.     :##:
+ *    .////-----+##:    `:###:
+ *     `-//:.   :##:  `:###/.
+ *       `-//:. :##:`:###/.
+ *         `-//:+######/.
+ *           `-/+####/.
+ *             `+##+.
+ *              :##:
+ *              :##:
+ *              :##:
+ *              :##:
+ *              :##:
+ *               .+:
+ *
+ */
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
 // #include <ESP32Servo.h>
 
+/**
+ * @brief WiFi parameters
+ */
+// set WiFi credentials
 #ifndef APSSID
 #define APSSID "smartyrobot"
 #define APPSK "smartyrobot"
 #endif
-
-/* Set these to your desired credentials. */
 const char *ssid = APSSID;
 const char *password = APPSK;
 
-// buffers for receiving and sending data
-char packetBuffer[4096 + 1];             // buffer to hold incoming packet,
-char ReplyBuffer[] = "acknowledged\r\n"; // a string to send back
-
+char packetBuffer[4096 + 1];   // buffer to hold incoming packet
 unsigned int localPort = 1234; // local port to listen on
 
 WiFiUDP Udp;
 
-// GPIO pin number for the LEDs
-#define PIN_L1 27
-#define PIN_L2 26
-#define PIN_R1 25
-#define PIN_R2 33
+/**
+ * @brief Motor pins
+ */
+#define PIN_L1 27 // left motor pin 1
+#define PIN_L2 26 // left motor pin 2
+#define PIN_R1 25 // right motor pin 1
+#define PIN_R2 33 // right motor pin 2
 
-// PWM channels
-#define PWM_L1 0
-#define PWM_L2 1
-#define PWM_R1 2
-#define PWM_R2 3
+/**
+ * @brief PWM channels
+ */
+#define PWM_L1 0 // left motor pin 1
+#define PWM_L2 1 // left motor pin 2
+#define PWM_R1 2 // right motor pin 1
+#define PWM_R2 3 // right motor pin 2
 
-// PWM properties
-const int pwmFreq = 5000;
-const int pwmResolution = 8;
+const int pwmFreq = 5000; // PWM frequency
+const int pwmResolution = 8; // PWM resolution
 
 int right_speed = 0;
 int left_speed = 0;
