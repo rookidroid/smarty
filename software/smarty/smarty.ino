@@ -77,6 +77,11 @@ bool rover;
 int str_idx;
 String inputString = "";
 
+/**
+ * @brief Set the right motor speed
+ * 
+ * @param speed motor speed, -255 ~ 255
+ */
 void set_right_motor(int speed)
 {
   if (speed >= 0)
@@ -91,6 +96,11 @@ void set_right_motor(int speed)
   }
 }
 
+/**
+ * @brief Set the left motor speed
+ * 
+ * @param speed motor speed, -255 ~ 255
+ */
 void set_left_motor(int speed)
 {
   if (speed >= 0)
@@ -105,6 +115,10 @@ void set_left_motor(int speed)
   }
 }
 
+/**
+ * @brief Initial setup
+ * 
+ */
 void setup()
 {
   Serial.begin(115200);
@@ -139,6 +153,10 @@ void setup()
   set_right_motor(0);
 }
 
+/**
+ * @brief Loop
+ * 
+ */
 void loop()
 {
   int packetSize = Udp.parsePacket();
