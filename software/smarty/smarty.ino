@@ -55,8 +55,8 @@ WiFiUDP Udp;
  */
 #define PIN_L1 27 // left motor pin 1
 #define PIN_L2 26 // left motor pin 2
-#define PIN_R1 25 // right motor pin 1
-#define PIN_R2 33 // right motor pin 2
+#define PIN_R1 33 // right motor pin 1
+#define PIN_R2 25 // right motor pin 2
 
 /**
  * @brief PWM channels
