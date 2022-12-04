@@ -50,28 +50,48 @@ unsigned int localPort = 1234; // local port to listen on
 
 WiFiUDP Udp;
 
+const int MID = 0;
+const int MIN = -255;
+const int MAX = 255;
+
+const int center_var_x = 1890;
+const int center_var_y = 1872;
+const float scale_x_upper = (float)(MAX - MID) / (4096.0 - (float)center_var_x);
+const float scale_x_lower = (float)(MAX - MID) / ((float)center_var_x);
+const float scale_y_upper = (float)(MAX - MID) / (4096.0 - (float)center_var_y);
+const float scale_y_lower = (float)(MAX - MID) / ((float)center_var_y);
+
+int x_val = center_var_x;
+int y_val = center_var_y;
+
+float main_dutycycle = 0;
+float offset_dutycycle = 0;
+
+int left_duty;
+int right_duty;
+
 /**
  * @brief Motor pins
  */
-#define PIN_L1 27 // left motor pin 1
-#define PIN_L2 26 // left motor pin 2
-#define PIN_R1 33 // right motor pin 1
-#define PIN_R2 25 // right motor pin 2
+#define PIN_R1 27 // left motor pin 1
+#define PIN_R2 26 // left motor pin 2
+#define PIN_L1 33 // right motor pin 1
+#define PIN_L2 25 // right motor pin 2
 
 /**
  * @brief PWM channels
  */
-#define PWM_L1 0 // left motor pin 1
-#define PWM_L2 1 // left motor pin 2
-#define PWM_R1 2 // right motor pin 1
-#define PWM_R2 3 // right motor pin 2
+#define PWM_R1 0 // left motor pin 1
+#define PWM_R2 1 // left motor pin 2
+#define PWM_L1 2 // right motor pin 1
+#define PWM_L2 3 // right motor pin 2
 
 const int pwmFreq = 5000; // PWM frequency
 const int pwmResolution = 8; // PWM resolution
 
 int right_speed = 0;
 int left_speed = 0;
-int x_val, y_val;
+
 bool rover;
 
 int str_idx;
@@ -185,6 +205,9 @@ void loop()
           int sLength = inputString.length();
           String tempStr = inputString.substring(1, sLength);
           x_val = tempStr.toInt();
+          Serial.print('X');
+          Serial.print(x_val);
+          Serial.print("\n");
           rover = true;
         }
         else if (inputString[0] == 'Y')
@@ -192,6 +215,9 @@ void loop()
           int sLength = inputString.length();
           String tempStr = inputString.substring(1, sLength);
           y_val = tempStr.toInt();
+          Serial.print('Y');
+          Serial.print(y_val);
+          Serial.print("\n");
           rover = true;
         }
         else if (inputString[0] == 'L')
@@ -217,6 +243,58 @@ void loop()
   }
 
   if (rover)
-  {
-  }
+    {
+      if (y_val >= center_var_y)
+      {
+        main_dutycycle = (float)(center_var_y - y_val) * scale_y_upper;
+      }
+      else
+      {
+        main_dutycycle = (float)(center_var_y - y_val) * scale_y_lower;
+      }
+  
+      if (x_val >= center_var_x)
+      {
+        offset_dutycycle = (float)(center_var_x - x_val) * scale_x_upper;
+      }
+      else
+      {
+        offset_dutycycle = (float)(center_var_x - x_val) * scale_x_lower;
+      }
+  
+      left_duty = round(-(main_dutycycle + offset_dutycycle) + MID);
+      right_duty = round(-(main_dutycycle - offset_dutycycle) + MID);
+  
+      if (left_duty >= MIN && left_duty <= MAX)
+      {
+        set_left_motor(left_duty);
+//        servo_l.writeMicroseconds(left_duty);
+      }
+      else if (left_duty < MIN)
+      {
+        set_left_motor(MIN);
+//        servo_l.writeMicroseconds(MIN);
+      }
+      else if (left_duty > MAX)
+      {
+        set_left_motor(MAX);
+//        servo_l.writeMicroseconds(MAX);
+      }
+  
+      if (right_duty >= MIN && right_duty <= MAX)
+      {
+        set_right_motor(right_duty);
+//        servo_r.writeMicroseconds(right_duty);
+      }
+      else if (right_duty < MIN)
+      {
+        set_right_motor(MIN);
+//        servo_r.writeMicroseconds(MIN);
+      }
+      else if (right_duty > MAX)
+      {
+        set_right_motor(MAX);
+//        servo_r.writeMicroseconds(MAX);
+      }
+    }
 }
