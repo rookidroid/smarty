@@ -12,6 +12,6 @@ The objective of this work is to build a cute little robot for my daughter. It c
 
 The brain of Smarty is a ESP32 Dev board powered by a 9V battery. It is programmed with Arduino.
 
-<img src="./imgs/smarty_remote.jpg" alt="smarty_remote" width="500"/>
+<img src="./imgs/smarty_remote.jpg" alt="smarty_remote" width="400"/>
 
-<img src="./imgs/smarty_open.jpg" alt="smarty_open" width="500"/>
+<img src="./imgs/smarty_open.jpg" alt="smarty_open" width="400"/>
