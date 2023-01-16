@@ -18,3 +18,5 @@ A remote controller comes together with this design. This remote controller has 
 
 <img src="./imgs/smarty_remote.jpg" alt="smarty_remote" width="400"/>
 
+https://user-images.githubusercontent.com/471808/212742878-e41ff177-bd68-45c1-9dd8-94123c825847.mp4
+
