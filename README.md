@@ -2,7 +2,7 @@
 
 A mini robot modified based on [SMARS modular robot](https://www.thingiverse.com/thing:2662828)
 
-![banner](imgs/smarty.jpg)
+![banner](imgs/banner.jpg)
 
 ## Objective
 
