@@ -14,7 +14,7 @@ The brain of Smarty is a ESP32 Dev board powered by a 9V battery. It is programm
 
 <img src="./imgs/smarty_open.jpg" alt="smarty_open" width="400"/>
 
-
+A remote controller comes together with this design. This remote controller has only one joystick. Another ESP32 Dev board is used in this remote controller and it is also powered by a 9V battery.
 
 <img src="./imgs/smarty_remote.jpg" alt="smarty_remote" width="400"/>
 
