@@ -41,13 +41,18 @@ There is an Android APP that can be used to control the robot too. The source fi
 
 - chassis x1
 <img src="./imgs/chassis.jpg" alt="chassis" width="300"/>
+
 - battery_cover x1
 <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="300"/>
+
 - board_holder x1
 <img src="./imgs/board_holder.jpg" alt="board_holder" width="300"/>
+
 - connector x2
 <img src="./imgs/connector.jpg" alt="connector" width="300"/>
+
 - holding_board x2
 <img src="./imgs/holding_board.jpg" alt="holding_board" width="300"/>
+
 - top_cover x2
 <img src="./imgs/top_cover.jpg" alt="top_cover" width="300"/>
