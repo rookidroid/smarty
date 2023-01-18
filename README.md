@@ -56,3 +56,14 @@ There is an Android APP that can be used to control the robot too. The source fi
 
 - top_cover x2
 <img src="./imgs/top_cover.jpg" alt="top_cover" width="300"/>
+
+#### Wheel x4
+
+- wheel x4
+<img src="./imgs/wheel.jpg" alt="wheel" width="300"/>
+
+- retaining_ring x4
+<img src="./imgs/retaining_ring.jpg" alt="retaining_ring" width="300"/>
+
+- mechanical_track x32
+<img src="./imgs/mechanical_track.jpg" alt="mechanical_track" width="300"/>
