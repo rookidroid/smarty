@@ -67,3 +67,12 @@ There is an Android APP that can be used to control the robot too. The source fi
 
 - mechanical_track x32
 <img src="./imgs/mechanical_track.jpg" alt="mechanical_track" width="300"/>
+
+#### Attachmenet
+
+- eyes
+<img src="./imgs/eyes.jpg" alt="eyes" width="300"/>
+
+- pusher
+<img src="./imgs/pusher.jpg" alt="pusher" width="300"/>
+
