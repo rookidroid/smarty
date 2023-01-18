@@ -20,3 +20,15 @@ A remote controller comes together with this design. This remote controller has 
 
 https://user-images.githubusercontent.com/471808/212742878-e41ff177-bd68-45c1-9dd8-94123c825847.mp4
 
+## Software
+
+### ESP32
+
+- Install `esp32` in Arduino IDE's Boards Manager.
+- Select `ESP32 Dev Module` for the board.
+
+`smarty.ino` is for the robot, and `joystick.ino` is for the remote controller.
+
+### Android
+
+There is an Android APP that can be used to control the robot too. The source files are under `software/android`.
