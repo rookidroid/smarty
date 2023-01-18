@@ -32,3 +32,11 @@ https://user-images.githubusercontent.com/471808/212742878-e41ff177-bd68-45c1-9d
 ### Android
 
 There is an Android APP that can be used to control the robot too. The source files are under `software/android`.
+
+## Mechanism
+
+### 3D printed parts
+
+#### Body x 1
+
+- chassis <img src="./imgs/chassis.jpg" alt="body_top" width="300"/>
