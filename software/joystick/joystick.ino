@@ -169,28 +169,28 @@ void connectToWiFi(const char *ssid, const char *pwd)
 }
 
 // WiFi event handler
-void WiFiEvent(WiFiEvent_t event)
-{
-    switch (event)
-    {
-    case ARDUINO_EVENT_WIFI_STA_GOT_IP:
-        // when connected set
-        Serial.print("WiFi connected! IP address: ");
-        Serial.println(WiFi.localIP());
-        // initializes the UDP state
-        // this initializes the transfer buffer
-        udp.begin(WiFi.localIP(), udpPort);
-        connected = true;
-        ledcWrite(PWM_YELLOW, 0);
-        ledcWrite(PWM_GREEN, 2);
-        break;
-    case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
-        Serial.println("WiFi lost connection");
-        connected = false;
-        ledcWrite(PWM_YELLOW, 2);
-        ledcWrite(PWM_GREEN, 0);
-        break;
-    default:
-        break;
-    }
-}
+//void WiFiEvent(WiFiEvent_t event)
+//{
+//    switch (event)
+//    {
+//    case ARDUINO_EVENT_WIFI_STA_GOT_IP:
+//        // when connected set
+//        Serial.print("WiFi connected! IP address: ");
+//        Serial.println(WiFi.localIP());
+//        // initializes the UDP state
+//        // this initializes the transfer buffer
+//        udp.begin(WiFi.localIP(), udpPort);
+//        connected = true;
+//        ledcWrite(PWM_YELLOW, 0);
+//        ledcWrite(PWM_GREEN, 2);
+//        break;
+//    case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
+//        Serial.println("WiFi lost connection");
+//        connected = false;
+//        ledcWrite(PWM_YELLOW, 2);
+//        ledcWrite(PWM_GREEN, 0);
+//        break;
+//    default:
+//        break;
+//    }
+//}
