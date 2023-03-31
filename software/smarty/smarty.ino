@@ -73,10 +73,10 @@ int right_duty;
 /**
  * @brief Motor pins
  */
-#define PIN_R1 26 // left motor pin 1
-#define PIN_R2 27 // left motor pin 2
-#define PIN_L1 33 // right motor pin 1
-#define PIN_L2 25 // right motor pin 2
+#define PIN_L2 26 // left motor pin 1
+#define PIN_L1 27 // left motor pin 2
+#define PIN_R2 25 // right motor pin 1
+#define PIN_R1 33 // right motor pin 2
 
 /**
  * @brief PWM channels
@@ -263,7 +263,7 @@ void loop()
       }
   
       left_duty = round(-(main_dutycycle + offset_dutycycle) + MID);
-      right_duty = round((-(main_dutycycle - offset_dutycycle) + MID)*0.95);
+      right_duty = round(-(main_dutycycle - offset_dutycycle) + MID);
   
       if (left_duty >= MIN && left_duty <= MAX)
       {
