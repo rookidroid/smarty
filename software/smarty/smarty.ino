@@ -78,6 +78,14 @@ int right_duty;
 #define PIN_R2 25 // right motor pin 1
 #define PIN_R1 33 // right motor pin 2
 
+
+#define PIN_LED1 18
+#define PIN_LED2 19
+
+// PWM channels
+#define PWM_LED1 4
+#define PWM_LED2 5
+
 /**
  * @brief PWM channels
  */
@@ -168,6 +176,17 @@ void setup()
 
   ledcSetup(PWM_R2, pwmFreq, pwmResolution);
   ledcAttachPin(PIN_R2, PWM_R2);
+
+  pinMode(PIN_LED1, OUTPUT);
+  pinMode(PIN_LED2, OUTPUT);
+  ledcSetup(PWM_LED1, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_LED1, PWM_LED1);
+
+  ledcSetup(PWM_LED2, pwmFreq, pwmResolution);
+  ledcAttachPin(PIN_LED2, PWM_LED2);
+
+  ledcWrite(PWM_LED1, 128);
+  ledcWrite(PWM_LED2, 128);
 
   set_left_motor(0);
   set_right_motor(0);
