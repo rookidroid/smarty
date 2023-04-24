@@ -33,8 +33,8 @@
 #include <WiFiUdp.h>
 
 // GPIO pin number for the LEDs
-#define PIN_GREEN 27
-#define PIN_YELLOW 26
+#define PIN_GREEN 26
+#define PIN_YELLOW 27
 #define PIN_BLUE 25
 
 // GPIO pin number for the joystick
@@ -49,8 +49,8 @@
 #define PWM_BLUE 2
 
 // WiFi parameters
-const char *ssid = "smartyrobot";
-const char *password = "smartyrobot";
+const char *ssid = "smartyrobot2";
+const char *password = "smartyrobot2";
 //const char *ssid = "emmawifi";
 //const char *password = "8067868889";
 boolean connected = false;
@@ -169,28 +169,28 @@ void connectToWiFi(const char *ssid, const char *pwd)
 }
 
 // WiFi event handler
-//void WiFiEvent(WiFiEvent_t event)
-//{
-//    switch (event)
-//    {
-//    case ARDUINO_EVENT_WIFI_STA_GOT_IP:
-//        // when connected set
-//        Serial.print("WiFi connected! IP address: ");
-//        Serial.println(WiFi.localIP());
-//        // initializes the UDP state
-//        // this initializes the transfer buffer
-//        udp.begin(WiFi.localIP(), udpPort);
-//        connected = true;
-//        ledcWrite(PWM_YELLOW, 0);
-//        ledcWrite(PWM_GREEN, 2);
-//        break;
-//    case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
-//        Serial.println("WiFi lost connection");
-//        connected = false;
-//        ledcWrite(PWM_YELLOW, 2);
-//        ledcWrite(PWM_GREEN, 0);
-//        break;
-//    default:
-//        break;
-//    }
-//}
+void WiFiEvent(WiFiEvent_t event)
+{
+    switch (event)
+    {
+    case ARDUINO_EVENT_WIFI_STA_GOT_IP:
+        // when connected set
+        Serial.print("WiFi connected! IP address: ");
+        Serial.println(WiFi.localIP());
+        // initializes the UDP state
+        // this initializes the transfer buffer
+        udp.begin(WiFi.localIP(), udpPort);
+        connected = true;
+        ledcWrite(PWM_YELLOW, 0);
+        ledcWrite(PWM_GREEN, 2);
+        break;
+    case ARDUINO_EVENT_WIFI_STA_DISCONNECTED:
+        Serial.println("WiFi lost connection");
+        connected = false;
+        ledcWrite(PWM_YELLOW, 2);
+        ledcWrite(PWM_GREEN, 0);
+        break;
+    default:
+        break;
+    }
+}
