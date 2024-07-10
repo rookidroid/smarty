@@ -39,8 +39,8 @@
  */
 // set WiFi credentials
 #ifndef APSSID
-#define APSSID "smartyrobot"
-#define APPSK "smartyrobot"
+#define APSSID "smartyrobot_cathy"
+#define APPSK "smartyrobot_cathy"
 #endif
 const char *ssid = APSSID;
 const char *password = APPSK;
@@ -73,10 +73,10 @@ int right_duty;
 /**
  * @brief Motor pins
  */
-#define PIN_L2 25 // left motor pin 1
-#define PIN_L1 33 // left motor pin 2
-#define PIN_R2 27 // right motor pin 1
-#define PIN_R1 26 // right motor pin 2
+#define PIN_R2 25 // left motor pin 1
+#define PIN_R1 33 // left motor pin 2
+#define PIN_L2 27 // right motor pin 1
+#define PIN_L1 26 // right motor pin 2
 
 
 #define PIN_LED1 18
