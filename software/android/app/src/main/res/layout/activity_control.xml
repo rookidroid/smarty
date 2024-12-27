@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_200">
+        android:baselineAligned="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -20,18 +20,72 @@
             <com.rookiedev.smarty.view.VerticalSeekBar
                 android:id="@+id/seekBar_l"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingStart="50dp"
-                android:paddingEnd="50dp"
+                android:layout_height="0dp"
                 android:max="510"
                 android:min="0"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
                 android:progress="255"
-                android:thumb="@drawable/seekbar_drawable_thumb"
                 android:progressDrawable="@drawable/seek_bar"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@drawable/seekbar_drawable_thumb"
+                app:layout_constraintBottom_toTopOf="@+id/label_left_dummy"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_left_wheel"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/label_left_wheel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Left Wheel"
+                app:layout_constraintBottom_toTopOf="@+id/seekBar_l"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_left_faster"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="58dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="+ Speed +"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/seekBar_l"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_left_slower"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="58dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="- Speed -"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/seekBar_l" />
+
+            <TextView
+                android:id="@+id/label_left_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar_l" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,18 +96,71 @@
             <com.rookiedev.smarty.view.VerticalSeekBar
                 android:id="@+id/seekBar_r"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingStart="50dp"
-                android:paddingEnd="50dp"
+                android:layout_height="0dp"
                 android:max="510"
                 android:min="0"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
                 android:progress="255"
-                android:thumb="@drawable/seekbar_drawable_thumb"
                 android:progressDrawable="@drawable/seek_bar"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@drawable/seekbar_drawable_thumb"
+                app:layout_constraintBottom_toTopOf="@+id/label_right_dummy"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_right_wheel" />
+
+            <TextView
+                android:id="@+id/label_right_wheel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Right Wheel"
+                app:layout_constraintBottom_toTopOf="@+id/seekBar_r"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_right_faster"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="58dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="+ Speed +"
+                app:layout_constraintEnd_toStartOf="@+id/seekBar_r"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/label_right_slower"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="58dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="- Speed -"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/seekBar_r"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/label_right_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar_r" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

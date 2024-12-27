@@ -3,7 +3,7 @@
    viewBox="0 0 1282.087 1282.087"
    version="1.1"
    id="svg18"
-   sodipodi:docname="cubic-car-icon.svg"
+   sodipodi:docname="smarty.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    width="1282.087"
    height="1282.087"
@@ -23,7 +23,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.62700485"
-     inkscape:cx="665.86407"
+     inkscape:cx="666.66151"
      inkscape:cy="610.84057"
      inkscape:window-width="3840"
      inkscape:window-height="2054"
@@ -32,7 +32,7 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="svg18" />
   <circle
-     style="fill:#e8e6ff;fill-opacity:1;stroke:none;stroke-width:30.2362;stroke-linecap:round"
+     style="fill:#b2aed9;fill-opacity:1;stroke:none;stroke-width:30.2362;stroke-linecap:round"
      id="path1"
      cx="641.04352"
      cy="641.04352"
@@ -59,7 +59,8 @@
        height="180"
        rx="25"
        fill="#424242"
-       id="rect2" />
+       id="rect2"
+       style="fill:#ffffff;fill-opacity:1" />
     <rect
        x="176"
        y="176"
