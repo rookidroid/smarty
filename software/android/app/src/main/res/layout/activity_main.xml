@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_200"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -30,7 +28,7 @@
                 android:layout_height="150dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:src="@drawable/ic_smarty"
+                android:src="@drawable/smarty"
                 app:layout_constraintBottom_toTopOf="@id/tab"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,26 +42,14 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:cardElevation="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ip_input_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:paddingStart="16dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="16dp"
+                        android:paddingStart="32dp"
+                        android:paddingTop="32dp"
+                        android:paddingEnd="32dp"
                         android:visibility="visible"
                         app:errorEnabled="true"
                         app:layout_constraintBottom_toTopOf="@id/port_input_layout"
@@ -87,8 +73,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
+                        android:paddingStart="32dp"
+                        android:paddingEnd="32dp"
                         android:visibility="visible"
                         app:errorEnabled="true"
                         app:layout_constraintBottom_toTopOf="@id/button_connect"
@@ -107,17 +93,12 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
             <Button
                 android:id="@+id/button_connect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:elevation="8dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
