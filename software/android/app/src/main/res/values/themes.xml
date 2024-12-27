@@ -47,4 +47,8 @@
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
     </style>
+
+    <style name="AppTheme.Controller" parent="AppTheme">
+        <item name="android:colorBackground">@color/controller_background</item>
+    </style>
 </resources>

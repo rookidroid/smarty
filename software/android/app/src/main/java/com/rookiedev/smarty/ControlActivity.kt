@@ -1,14 +1,21 @@
 package com.rookiedev.smarty
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.widget.SeekBar
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.rookiedev.smarty.view.VerticalSeekBar
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -20,14 +27,12 @@ import java.net.SocketException
  * Behaviors of immersive mode.
  */
 enum class BehaviorOption(
-    val title: String,
-    val value: Int
+    val title: String, val value: Int
 ) {
     // Swipe from the edge to show a hidden bar. Gesture navigation works regardless of visibility
     // of the navigation bar.
     Default(
-        "BEHAVIOR_DEFAULT",
-        WindowInsetsController.BEHAVIOR_DEFAULT
+        "BEHAVIOR_DEFAULT", WindowInsetsController.BEHAVIOR_DEFAULT
     ),
 
     // "Sticky immersive mode". Swipe from the edge to temporarily reveal the hidden bar.
@@ -41,29 +46,25 @@ enum class BehaviorOption(
  * Type of system bars to hide or show.
  */
 enum class TypeOption(
-    val title: String,
-    val value: Int
+    val title: String, val value: Int
 ) {
     // Both the status bar and the navigation bar
     SystemBars(
-        "systemBars()",
-        WindowInsets.Type.systemBars()
+        "systemBars()", WindowInsets.Type.systemBars()
     ),
 
     // The status bar only.
     StatusBar(
-        "statusBars()",
-        WindowInsets.Type.statusBars()
+        "statusBars()", WindowInsets.Type.statusBars()
     ),
 
     // The navigation bar only
     NavigationBar(
-        "navigationBars()",
-        WindowInsets.Type.navigationBars()
+        "navigationBars()", WindowInsets.Type.navigationBars()
     )
 }
 
-class ControlActivity : Activity() {
+class ControlActivity : AppCompatActivity() {
     private var mContext: Context? = null
     private var ip: String = ""
     private var port = 0
@@ -83,6 +84,7 @@ class ControlActivity : Activity() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_control)
 
@@ -103,10 +105,10 @@ class ControlActivity : Activity() {
         seekBarLeft!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "L"
-                val speed = ((i - 255)/10)*10
-                if (leftSpeed!=speed) {
+                val speed = ((i - 255) / 10) * 10
+                if (leftSpeed != speed) {
                     sendMessageAsync(msg.plus(speed.toString()).plus(":"))
-                    leftSpeed=speed
+                    leftSpeed = speed
                 }
             }
 
@@ -122,8 +124,8 @@ class ControlActivity : Activity() {
         seekBarRight!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 val msg = "R"
-                val speed = ((i - 255)/10)*10
-                if (rightSpeed!=speed) {
+                val speed = ((i - 255) / 10) * 10
+                if (rightSpeed != speed) {
                     sendMessageAsync(msg.plus(speed.toString()).plus(":"))
                     rightSpeed = speed
                 }
@@ -190,11 +192,10 @@ class ControlActivity : Activity() {
         }
     }
 
-    private fun sendUdpMessage(UDPMessage: String){
+    private fun sendUdpMessage(UDPMessage: String) {
         val bufferData = UDPMessage.toByteArray()
         val udpOut = DatagramPacket(
-            bufferData, bufferData.count(),
-            InetAddress.getByName(ip), port
+            bufferData, bufferData.count(), InetAddress.getByName(ip), port
         )
         try {
             UDPSocket!!.send(udpOut)

@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var portInput: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

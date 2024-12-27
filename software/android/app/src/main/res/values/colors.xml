@@ -14,6 +14,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blackTransparent">#8F000000</color>
 
+    <color name="controller_background">#141218</color>
+
     <color name="md_theme_primary">#006A60</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#9EF2E4</color>
