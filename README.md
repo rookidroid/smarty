@@ -1,8 +1,6 @@
 # <img src="./imgs/smarty.svg" alt="logo" width="64"/> Smarty
 
-A mini robot modified based on [SMARS modular robot](https://www.thingiverse.com/thing:2662828)
-
-![banner](imgs/banner.jpg)
+<img src="./imgs/smarty_1.jpg" alt="smarty_photo1" width="300"/><img src="./imgs/smarty_4.jpg" alt="smarty_photo2" width="300"/>
 
 ## Objective
 
@@ -10,15 +8,7 @@ The objective of this work is to build a cute little robot for my daughter. It c
 
 ## Overview
 
-The brain of Smarty is a ESP32 Dev board powered by a 9V battery. It is programmed with Arduino. The Dev board and the power switch are accessible  under the top cover, which is attached via magnets.
-
-<img src="./imgs/smarty_open.jpg" alt="smarty_open" width="400"/>
-
-A remote controller comes together with this design. This remote controller has only one joystick. Another ESP32 Dev board is used in this remote controller and it is also powered by a 9V battery.
-
-<img src="./imgs/smarty_remote.jpg" alt="smarty_remote" width="400"/>
-
-https://user-images.githubusercontent.com/471808/212742878-e41ff177-bd68-45c1-9dd8-94123c825847.mp4
+This compact, remote-controllable robot car features a lightweight 3D-printed chassis, making it both durable and customizable. Powered by a 9V battery and driven by an ESP32 development board, the car supports wireless control via Wi-Fi. Perfect for hobbyists and educational projects, it combines mobility, smart control, and DIY engineering in one sleek package.
 
 ## Software
 
