@@ -14,18 +14,18 @@ This compact, remote-controllable robot car features a lightweight 3D-printed ch
 
 ### 3D-Printed Parts
 
-| Filename           | Thumbnail                                                                     | Required # |
-| ------------------ | ----------------------------------------------------------------------------- | ---------- |
-| chassis            | <img src="./imgs/chassis.jpg" alt="chassis" width="400"/>                     | 1          |
-| motor_cover        | <img src="./imgs/motor_cover.jpg" alt="motor_cover" width="400"/>             | 2          |
-| pcb_holder         | <img src="./imgs/pcb_holder.jpg" alt="pcb_holder" width="400"/>               | 1          |
-| top_cover          | <img src="./imgs/top_cover.jpg" alt="top_cover" width="400"/>                 | 1          |
-| battery_cover      | <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="400"/>         | 1          |
-| fill_block         | <img src="./imgs/fill_block.jpg" alt="fill_block" width="400"/>               |            |
-| master_wheel_oring | <img src="./imgs/master_wheel.jpg" alt="master_wheel_oring" width="400"/>     |            |
-| slave_wheel_oring  | <img src="./imgs/slave_wheel.jpg" alt="slave_wheel_oring" width="400"/>       |            |
-| connector_front    | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |
-| connector_trailer  | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |
+| Filename           | Thumbnail                                                                     | Required # | Note                                           |
+| ------------------ | ----------------------------------------------------------------------------- | ---------- | ---------------------------------------------- |
+| chassis            | <img src="./imgs/chassis.jpg" alt="chassis" width="400"/>                     | 1          | 8 x [6mm (diameter) x 2mm (thickness)] magnets |
+| motor_cover        | <img src="./imgs/motor_cover.jpg" alt="motor_cover" width="400"/>             | 2          |                                                |
+| pcb_holder         | <img src="./imgs/pcb_holder.jpg" alt="pcb_holder" width="400"/>               | 1          |                                                |
+| top_cover          | <img src="./imgs/top_cover.jpg" alt="top_cover" width="400"/>                 | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets |
+| battery_cover      | <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="400"/>         | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets |
+| fill_block         | <img src="./imgs/fill_block.jpg" alt="fill_block" width="400"/>               | 0 or 2     | Same numbers as slave wheels                   |
+| master_wheel_oring | <img src="./imgs/master_wheel.jpg" alt="master_wheel_oring" width="360"/>     | 4 or 2     | 4-wheel drive or 2-wheel drive                 |
+| slave_wheel_oring  | <img src="./imgs/slave_wheel.jpg" alt="slave_wheel_oring" width="400"/>       | 0 or 2     | 4-wheel drive or 2-wheel drive                 |
+| connector_front    | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |                                                |
+| connector_trailer  | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |                                                |
 
 ## Software
 
