@@ -10,19 +10,6 @@ The objective of this work is to build a cute little robot for my daughter. It c
 
 This compact, remote-controllable robot car features a lightweight 3D-printed chassis, making it both durable and customizable. Powered by a 9V battery and driven by an ESP32 development board, the car supports wireless control via Wi-Fi. Perfect for hobbyists and educational projects, it combines mobility, smart control, and DIY engineering in one sleek package.
 
-## Software
-
-### ESP32
-
-- Install `esp32` in Arduino IDE's Boards Manager.
-- Select `ESP32 Dev Module` for the board.
-
-`smarty.ino` is for the robot, and `joystick.ino` is for the remote controller.
-
-### Android
-
-There is an Android APP that can be used to control the robot too. The source files are under `software/android`.
-
 ## Mechanism
 
 ### 3D-Printed Parts
@@ -39,3 +26,12 @@ There is an Android APP that can be used to control the robot too. The source fi
 | slave_wheel_oring  | <img src="./imgs/slave_wheel.jpg" alt="slave_wheel_oring" width="400"/>       |            |
 | connector_front    | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |
 | connector_trailer  | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |
+
+## Software
+
+### ESP32
+
+- Install `esp32` in Arduino IDE's Boards Manager.
+- Select `ESP32 Dev Module` for the board.
+
+`smarty.ino` is for the robot, and `joystick.ino` is for the remote controller.
