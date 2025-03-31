@@ -33,5 +33,3 @@ This compact, remote-controllable robot car features a lightweight 3D-printed ch
 
 - Install `esp32` in Arduino IDE's Boards Manager.
 - Select `ESP32 Dev Module` for the board.
-
-`smarty.ino` is for the robot, and `joystick.ino` is for the remote controller.
