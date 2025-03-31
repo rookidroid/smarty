@@ -25,44 +25,17 @@ There is an Android APP that can be used to control the robot too. The source fi
 
 ## Mechanism
 
-### 3D printed parts
+### 3D-Printed Parts
 
-#### Body x1
-
-- chassis x1
-<img src="./imgs/chassis.jpg" alt="chassis" width="300"/>
-
-- battery_cover x1
-<img src="./imgs/battery_cover.jpg" alt="battery_cover" width="300"/>
-
-- board_holder x1
-<img src="./imgs/board_holder.jpg" alt="board_holder" width="300"/>
-
-- connector x2
-<img src="./imgs/connector.jpg" alt="connector" width="300"/>
-
-- holding_board x2
-<img src="./imgs/holding_board.jpg" alt="holding_board" width="300"/>
-
-- top_cover x2
-<img src="./imgs/top_cover.jpg" alt="top_cover" width="300"/>
-
-#### Wheel x4
-
-- wheel x4
-<img src="./imgs/wheel.jpg" alt="wheel" width="300"/>
-
-- retaining_ring x4
-<img src="./imgs/retaining_ring.jpg" alt="retaining_ring" width="300"/>
-
-- mechanical_track x32
-<img src="./imgs/mechanical_track.jpg" alt="mechanical_track" width="300"/>
-
-#### Attachmenet
-
-- eyes
-<img src="./imgs/eyes.jpg" alt="eyes" width="300"/>
-
-- pusher
-<img src="./imgs/pusher.jpg" alt="pusher" width="300"/>
-
+| Filename           | Thumbnail                                                                     | Required # |
+| ------------------ | ----------------------------------------------------------------------------- | ---------- |
+| chassis            | <img src="./imgs/chassis.jpg" alt="chassis" width="400"/>                     | 1          |
+| motor_cover        | <img src="./imgs/motor_cover.jpg" alt="motor_cover" width="400"/>             | 2          |
+| pcb_holder         | <img src="./imgs/pcb_holder.jpg" alt="pcb_holder" width="400"/>               | 1          |
+| top_cover          | <img src="./imgs/top_cover.jpg" alt="top_cover" width="400"/>                 | 1          |
+| battery_cover      | <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="400"/>         | 1          |
+| fill_block         | <img src="./imgs/fill_block.jpg" alt="fill_block" width="400"/>               |            |
+| master_wheel_oring | <img src="./imgs/master_wheel.jpg" alt="master_wheel_oring" width="400"/>     |            |
+| slave_wheel_oring  | <img src="./imgs/slave_wheel.jpg" alt="slave_wheel_oring" width="400"/>       |            |
+| connector_front    | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |
+| connector_trailer  | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |
