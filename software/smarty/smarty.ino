@@ -39,8 +39,8 @@
  */
 // set WiFi credentials
 #ifndef APSSID
-#define APSSID "smartyrobot_cathy"
-#define APPSK "smartyrobot_cathy"
+#define APSSID "smartyrobot_nick"
+#define APPSK "smartyrobot_nick"
 #endif
 const char *ssid = APSSID;
 const char *password = APPSK;
