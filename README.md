@@ -10,22 +10,22 @@ This compact, remote-controllable robot car features a lightweight 3D-printed ch
 
 ### 3D-Printed Parts
 
-| Filename          | Thumbnail                                                                     | Required # | Note                                           |
-| ----------------- | ----------------------------------------------------------------------------- | ---------- | ---------------------------------------------- |
-| chassis           | <img src="./imgs/chassis.jpg" alt="chassis" width="400"/>                     | 1          | 8 x [6mm (diameter) x 2mm (thickness)] magnets |
-| motor_cover       | <img src="./imgs/motor_cover.jpg" alt="motor_cover" width="400"/>             | 2          |                                                |
-| pcb_holder        | <img src="./imgs/pcb_holder.jpg" alt="pcb_holder" width="400"/>               | 1          |                                                |
-| top_cover         | <img src="./imgs/top_cover.jpg" alt="top_cover" width="400"/>                 | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets |
-| battery_cover     | <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="400"/>         | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets |
-| fill_block        | <img src="./imgs/fill_block.jpg" alt="fill_block" width="400"/>               | 0 or 2     | Same numbers as slave wheels                   |
-| wheel_master      | <img src="./imgs/wheel_master.jpg" alt="wheel_master" width="360"/>           | 4 or 2     | 4-wheel drive or 2-wheel drive                 |
-| wheel_slave       | <img src="./imgs/wheel_slave.jpg" alt="wheel_slave" width="400"/>             | 0 or 2     | 4-wheel drive or 2-wheel drive                 |
-| tire              | <img src="./imgs/tire.jpg" alt="tire" width="400"/>                           | 4          | Print with TPU                                 |
-| wheel_master_belt | <img src="./imgs/wheel_master_belt.jpg" alt="wheel_master_belt" width="360"/> | 2          |                                                |
-| wheel_slave_belt  | <img src="./imgs/wheel_slave_belt.jpg" alt="wheel_slave_belt" width="400"/>   | 2          |                                                |
-| belt              | <img src="./imgs/belt.jpg" alt="belt" width="400"/>                           | 2          | Print with TPU                                 |
-| connector_front   | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |                                                |
-| connector_trailer | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |                                                |
+| Filename          | Thumbnail                                                                     | Required # | Note                                                     |
+| ----------------- | ----------------------------------------------------------------------------- | ---------- | -------------------------------------------------------- |
+| chassis           | <img src="./imgs/chassis.jpg" alt="chassis" width="400"/>                     | 1          | 8 x [6mm (diameter) x 2mm (thickness)] magnets           |
+| motor_cover       | <img src="./imgs/motor_cover.jpg" alt="motor_cover" width="400"/>             | 2          |                                                          |
+| pcb_holder        | <img src="./imgs/pcb_holder.jpg" alt="pcb_holder" width="400"/>               | 1          |                                                          |
+| top_cover         | <img src="./imgs/top_cover.jpg" alt="top_cover" width="400"/>                 | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets           |
+| battery_cover     | <img src="./imgs/battery_cover.jpg" alt="battery_cover" width="400"/>         | 1          | 4 x [6mm (diameter) x 2mm (thickness)] magnets           |
+| fill_block        | <img src="./imgs/fill_block.jpg" alt="fill_block" width="400"/>               | 0 or 2     | Same numbers as slave wheels                             |
+| wheel_master      | <img src="./imgs/wheel_master.jpg" alt="wheel_master" width="360"/>           | 4 or 2     | 4-wheel drive or 2-wheel drive                           |
+| wheel_slave       | <img src="./imgs/wheel_slave.jpg" alt="wheel_slave" width="400"/>             | 0 or 2     | 4-wheel drive or 2-wheel drive                           |
+| tire              | <img src="./imgs/tire.jpg" alt="tire" width="400"/>                           | 4          | Print with TPU, compatible with Lego 56891 Tire 37 x 18R |
+| wheel_master_belt | <img src="./imgs/wheel_master_belt.jpg" alt="wheel_master_belt" width="360"/> | 2          |                                                          |
+| wheel_slave_belt  | <img src="./imgs/wheel_slave_belt.jpg" alt="wheel_slave_belt" width="400"/>   | 2          |                                                          |
+| belt              | <img src="./imgs/belt.jpg" alt="belt" width="400"/>                           | 2          | Print with TPU                                           |
+| connector_front   | <img src="./imgs/connector_front.jpg" alt="connector_front" width="400"/>     | 1          |                                                          |
+| connector_trailer | <img src="./imgs/connector_trailer.jpg" alt="connector_trailer" width="400"/> | 1          |                                                          |
 
 ## Software
 
