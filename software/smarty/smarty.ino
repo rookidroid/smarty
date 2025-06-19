@@ -263,8 +263,8 @@ void loop()
         offset_dutycycle = (float)(center_var_x - x_val) * scale_x_lower;
       }
   
-      left_duty = round((main_dutycycle + offset_dutycycle) - MID);
-      right_duty = round((main_dutycycle - offset_dutycycle) - MID);
+      left_duty = round((main_dutycycle - offset_dutycycle) - MID);
+      right_duty = round((main_dutycycle + offset_dutycycle) - MID);
   
       if (left_duty >= MIN && left_duty <= MAX)
       {
